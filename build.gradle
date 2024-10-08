@@ -1,0 +1,31 @@
+plugins {
+    id 'maven-publish'
+    id 'idea'
+}
+
+idea{
+    module{
+        downloadJavadoc = true
+    }
+}
+
+group 'top.alwaysready'
+version '1.0-SNAPSHOT'
+
+repositories {
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
+    maven {
+        url 'https://maven.aliyun.com/nexus/content/groups/public'
+    }
+    maven {
+        url 'https://repository.hanbings.io/proxy'
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "anchor_engine",
+  "version": "${version}",
+  "name": "AnchorEngineFabric",
+  "description": "A lightweight engine mod that works with its plugin counterpart.",
+  "authors": [
+    "AlwaysReadyWby"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "top.alwaysready.anchorengine.fabric.client.AnchorEngineFabricClient"
+    ],
+    "server": [
+      "top.alwaysready.anchorengine.fabric.server.AnchorEngineFabricServer"
+    ],
+    "main": [
+      "top.alwaysready.anchorengine.fabric.AnchorEngineFabric"
+    ]
+  },
+  "mixins": [
+    "anchorengine.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

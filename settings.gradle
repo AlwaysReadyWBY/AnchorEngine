@@ -1,0 +1,27 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
+        maven {
+            url 'https://lss233.littleservice.cn/repositories/minecraft/'
+        }
+        maven {
+            name "Fabric"
+            url = 'https://repository.hanbings.io/proxy'
+        }
+        mavenCentral()
+        gradlePluginPortal()
+
+        // Not needed, but useful for debugging gradle plugins
+        mavenLocal()
+    }
+}
+
+rootProject.name = 'AnchorEngine'
+include 'AnchorEngineFabric'
+include 'AnchorEngineCommon'
+include 'AnchorEngineSpigot'

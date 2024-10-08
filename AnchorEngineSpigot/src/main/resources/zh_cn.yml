@@ -1,0 +1,20 @@
+info:
+  format: '&e[锚点引擎]'
+  load: '%info.format% &a加载成功'
+  version: '%info.format% &a锚点引擎版本: %0% - %1%  作者:%2%'
+  no-perm: '%info.format% &c缺少权限%0%'
+  player-only: '%info.format% &c只有玩家才能这样做'
+  insufficient-arg: '%info.format% &c参数不足'
+  player-not-found: '%info.format% &c指定玩家 %0% 不存在或不在线'
+  file-not-found: '%info.format% &c未找到指定文件 %0%'
+help:
+  command:
+    version: '&e/anchor version &7- &a显示插件版本'
+    show: '&e/anchor show <组件名> [玩家] &7- &a令自己/指定玩家打开指定界面'
+    close: '&e/anchor close [玩家] &7- &a令自己/指定玩家关闭当前界面'
+    push: '&e/anchor push <文件名> [玩家] &7- &a将 push/文件名 指定的文件所定义的界面等信息同步至自己/指定玩家的客户端'
+    reload: '&e/anchor reload &7- &4重载插件'
+    debug: '&e/anchor debug &7- &4调试用指令'
+support:
+  betonquest:
+    npc-text: '&6[%0%] &e%1%'

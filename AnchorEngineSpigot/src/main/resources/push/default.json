@@ -1,0 +1,162 @@
+{
+  "ui": {
+    "betonquest:conv": {
+      "child": [
+        {
+          "url": "%anchor_bq_portrait_left%",
+          "fillMode": "SCALE",
+          "layout": {
+            "pin2": "portrait_left_rb",
+            "hAlign": "0",
+            "vAlign": "1"
+          },
+          "type": "anchor_engine:image"
+        },
+        {
+          "url": "%anchor_bq_portrait_right%",
+          "fillMode": "SCALE",
+          "layout": {
+            "pin1": "portrait_right_lb",
+            "pin2": "right_top",
+            "hAlign": "0",
+            "vAlign": "1"
+          },
+          "type": "anchor_engine:image"
+        },
+        {
+          "url": "res:anchor_engine:textures/gui/conv_bg.png",
+          "clip": {
+            "pinMap": {
+              "9p_lt": {
+                "xOffset": "8",
+                "yOffset": "32"
+              },
+              "9p_rb": {
+                "xOffset": "-8",
+                "yOffset": "-10",
+                "xGrow": "1",
+                "yGrow": "1"
+              }
+            }
+          },
+          "fillMode": "SCALE_9",
+          "layout": {
+            "pin1": "box_bg_lt",
+            "pin2": "right_bottom",
+            "pinMap": {
+              "9p_lt": {
+                "xOffset": "8",
+                "yOffset": "32"
+              },
+              "9p_rb": {
+                "xOffset": "-8",
+                "yOffset": "-10",
+                "xGrow": "1",
+                "yGrow": "1"
+              }
+            }
+          },
+          "type": "anchor_engine:image"
+        },
+        {
+          "replaceable": true,
+          "raw": "%anchor_bq_npc_name%",
+          "layout": {
+            "pin1": "box_lt",
+            "pin2": "name_rt",
+            "hAlign": "0.5",
+            "vAlign": "0.5"
+          },
+          "type": "anchor_engine:text"
+        },
+        {
+          "child": {
+            "child": [
+              {
+                "replaceable": true,
+                "raw": "%anchor_bq_npc_text%",
+                "layout": {
+                  "pin2": "right_top",
+                  "vWrap": "1"
+                },
+                "type": "anchor_engine:text"
+              },
+              {
+                "text": {
+                  "replaceable": true,
+                  "raw": "%anchor_bq_option_{index_option}%",
+                  "layout": {
+                    "hAlign": "0.5",
+                    "vAlign": "0.5"
+                  }
+                },
+                "button": {
+                  "onClick": "betonquest:option%index_option%"
+                },
+                "layout": {
+                  "pin2": "btn_rb"
+                },
+                "count": "%anchor_bq_option_count%",
+                "id": "option",
+                "type": "anchor_engine:button_widget"
+              }
+            ],
+            "layoutMode": "anchor_engine:linear_vertical",
+            "layout": {
+              "pin2": "right_top",
+              "pinMap": {
+                "btn_rb": {
+                  "yOffset": "16",
+                  "xGrow": "1"
+                }
+              },
+              "vWrap": "1"
+            },
+            "type": "anchor_engine:group"
+          },
+          "layout": {
+            "pin1": "scroll_lt",
+            "pin2": "scroll_rb"
+          },
+          "type": "anchor_engine:scroll"
+        }
+      ],
+      "layout": {
+        "pinMap": {
+          "name_rt": {
+            "yOffset": "-32",
+            "xGrow": "0.25",
+            "yGrow": "0.6"
+          },
+          "portrait_left_rb": {
+            "xGrow": "0.25",
+            "yGrow": "0.6"
+          },
+          "box_bg_lt": {
+            "yOffset": "-32",
+            "yGrow": "0.6"
+          },
+          "scroll_rb": {
+            "xOffset": "-8",
+            "yOffset": "-8",
+            "xGrow": "1",
+            "yGrow": "1"
+          },
+          "box_lt": {
+            "yOffset": "-8",
+            "yGrow": "0.6"
+          },
+          "portrait_right_lb": {
+            "xGrow": "0.75",
+            "yGrow": "0.6"
+          },
+          "scroll_lt": {
+            "xOffset": "8",
+            "yGrow": "0.6"
+          }
+        }
+      },
+      "type": "anchor_engine:group"
+    }
+  }
+}
