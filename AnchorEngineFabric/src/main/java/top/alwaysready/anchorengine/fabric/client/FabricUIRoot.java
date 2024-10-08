@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import top.alwaysready.anchorengine.common.client.ui.UIRoot;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
+import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.fabric.client.ui.AnchorScreen;
@@ -36,8 +37,13 @@ public class FabricUIRoot implements UIRoot {
             if (MinecraftClient.getInstance().currentScreen instanceof AnchorScreen screen) {
                 screen.update();
             }
+            if(hudRoot==null){
+                AnchorUtils.getService(UIElementManager.class)
+                        .flatMap(uiMan -> uiMan.getElement(UI_HUD))
+                        .ifPresent(this::setHud);
+            }
             if(hudRoot!=null){
-                getHudRegion().ifPresent(hudRegion -> getHudRoot().ifPresent(hudRoot -> hudRoot.update(hudRegion)));
+                getHudRegion().ifPresent(hudRegion -> hudRoot.update(hudRegion));
             }
         }catch (Exception e){
             AnchorUtils.warn("Failed to update ui.",e);

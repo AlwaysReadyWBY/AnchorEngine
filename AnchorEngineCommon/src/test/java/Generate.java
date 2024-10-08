@@ -2,6 +2,7 @@ import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.ui.element.*;
 import top.alwaysready.anchorengine.common.ui.layout.Layout;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinPoint;
+import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 public class Generate {
 
@@ -10,6 +11,27 @@ public class Generate {
     }
 
     public static UIElement generateElement(){
+        AGroup group = new AGroup();
+        PinPoint lt = new PinPoint();
+        lt.setXGrow("0.25");
+        lt.setYGrow("0.25");
+        PinPoint rb = new PinPoint();
+        rb.setXGrow("0.75");
+        rb.setYGrow("0.75");
+        group.getLayout().getPinMap().put("picLT", lt);
+        group.getLayout().getPinMap().put("picRB", rb);
+        AImage img = new AImage();
+        img.setFillMode(AImage.Fill.SCALE);
+        img.getLayout().setHAlign("0.5");
+        img.getLayout().setVAlign("0.5");
+        img.setUrl("net:https://img.picui.cn/free/2024/08/16/66bf68f219700.png");
+        img.getLayout().setPin1("picLT");
+        img.getLayout().setPin2("picRB");
+        group.getChildren().add(img);
+        return group;
+    }
+
+    public static UIElement generateBetonQuest(){
         AGroup group = new AGroup();
         PinPoint boxLT = new PinPoint();
         boxLT.setYGrow("0.6");
