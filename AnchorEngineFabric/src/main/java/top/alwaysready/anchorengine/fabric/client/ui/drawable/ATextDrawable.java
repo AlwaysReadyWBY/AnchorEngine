@@ -1,15 +1,12 @@
 package top.alwaysready.anchorengine.fabric.client.ui.drawable;
 
 import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
 import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.ui.element.AText;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
@@ -21,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class ATextDrawable extends AnchorDrawable<AText> {
-    private List<MultilineText.Line> lines = Collections.emptyList();
+    private List<TextLine> lines = Collections.emptyList();
     private double lineHeight = 12;
     private int color = 0xffffff;
 
@@ -33,11 +30,8 @@ public class ATextDrawable extends AnchorDrawable<AText> {
     protected void updateForRegion(ResolvedBoard region) {
         Text text;
         try {
-            text = TextCodecs.CODEC
-                    .decode(JsonOps.INSTANCE, AnchorEngine.getInstance().getCompactGson()
-                            .fromJson(getElement().getText(region.getReplacer()), JsonElement.class))
-                    .getOrThrow()
-                    .getFirst();
+            text = Text.Serializer.fromJson(AnchorEngine.getInstance().getCompactGson()
+                            .fromJson(getElement().getText(region.getReplacer()), JsonElement.class));
         } catch (IllegalStateException e){
             text = Text.empty();
         }
@@ -45,9 +39,9 @@ public class ATextDrawable extends AnchorDrawable<AText> {
         region.getReplacer().getAsHexInt(getElement().getColor()).ifPresent(this::setColor);
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         setLines(renderer.wrapLines(text,(int)region.getWidth()).stream()
-                .map(line -> new MultilineText.Line(line,renderer.getWidth(line)))
+                .map(line -> new TextLine(line,renderer.getWidth(line)))
                 .collect(Collectors.toList()));
-        setPreferredWidth(getLines().stream().map(MultilineText.Line::width).max(Integer::compareTo).orElse(0));
+        setPreferredWidth(getLines().stream().map(TextLine::width).max(Integer::compareTo).orElse(0));
         setPreferredHeight(getLineHeight() * getLines().size());
     }
 
@@ -59,11 +53,11 @@ public class ATextDrawable extends AnchorDrawable<AText> {
         return lineHeight;
     }
 
-    protected void setLines(List<MultilineText.Line> lines) {
+    protected void setLines(List<TextLine> lines) {
         this.lines = lines;
     }
 
-    public List<MultilineText.Line> getLines() {
+    public List<TextLine> getLines() {
         return lines;
     }
 
@@ -83,7 +77,7 @@ public class ATextDrawable extends AnchorDrawable<AText> {
                     double y = (getRegion().get().getTop() + getAlignOffsetY());
                     double minY = bounds.top() - getLineHeight();
                     int x = (int) (bounds.left() + getAlignOffsetX());
-                    for (MultilineText.Line line : getLines()) {
+                    for (TextLine line : getLines()) {
                         if(y >= minY) {
                             context.drawTextWithShadow(client.textRenderer, line.text(), x, (int) y, getColor());
                         }

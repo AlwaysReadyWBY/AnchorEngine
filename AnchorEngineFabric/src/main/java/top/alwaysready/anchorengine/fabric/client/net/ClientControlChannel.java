@@ -1,5 +1,7 @@
 package top.alwaysready.anchorengine.fabric.client.net;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import top.alwaysready.anchorengine.common.client.ClientVarManager;
 import top.alwaysready.anchorengine.common.client.ui.UIRoot;
 import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
@@ -9,6 +11,7 @@ import top.alwaysready.anchorengine.common.net.packet.json.Push;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
+@Environment(EnvType.CLIENT)
 public class ClientControlChannel extends AControlChannel {
     public ClientControlChannel() {
         super(false);

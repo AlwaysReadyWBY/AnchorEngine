@@ -43,8 +43,7 @@ public class AnchorEngineSpigot extends JavaPlugin {
         expansion.register();
         AnchorUtils.registerService(AnchorExpansion.class,expansion);
         cmdRoot = new CommandRoot();
-        Optional<ServerChannelManager> opt = AnchorUtils.getService(ServerChannelManager.class);
-        if(opt.isEmpty()) AnchorUtils.registerService(ServerChannelManager.class,new SpigotChannelManager(this));
+        AnchorUtils.registerService(ServerChannelManager.class,new SpigotChannelManager(this));
 
         if(getServer().getPluginManager().isPluginEnabled("BetonQuest")){
             BQSupport.init();

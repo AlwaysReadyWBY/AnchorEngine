@@ -126,10 +126,10 @@ public class AGroupDrawable extends AnchorDrawable<AGroup> {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         return getChildren().stream()
                 .filter(child -> child.isMouseOver(mouseX,mouseY))
-                .anyMatch(child -> child.mouseScrolled(mouseX,mouseY,horizontalAmount,verticalAmount));
+                .anyMatch(child -> child.mouseScrolled(mouseX,mouseY,amount));
     }
 
     @Override

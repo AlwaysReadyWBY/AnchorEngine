@@ -5,10 +5,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ButtonTextures;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.ui.element.AButton;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
@@ -18,8 +17,6 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class AButtonDrawable extends AnchorDrawable<AButton> {
-    private static final ButtonTextures VANILLA_TEXTURES = new ButtonTextures(Identifier.ofVanilla("widget/button"), Identifier.ofVanilla("widget/button_disabled"), Identifier.ofVanilla("widget/button_highlighted"));
-
     private String style = AButton.Styles.MODERN;
     private String onClick;
     private String onRelease;
@@ -95,11 +92,18 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
                     context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     RenderSystem.enableBlend();
                     RenderSystem.enableDepthTest();
-                    context.drawGuiTexture(VANILLA_TEXTURES.get(isActive(), isFocused()),
+                    int textureY = 46 + 20*(isActive()? hovered? 2:1 :0);
+                    context.drawNineSlicedTexture(ClickableWidget.WIDGETS_TEXTURE,
                             (int) bounds.left(),
                             (int) bounds.top(),
                             (int) bounds.width(),
-                            (int) bounds.height());
+                            (int) bounds.height(),
+                            20,
+                            4,
+                            200,
+                            20,
+                            0,
+                            textureY);
                     RenderSystem.disableBlend();
                     RenderSystem.disableDepthTest();
                 }

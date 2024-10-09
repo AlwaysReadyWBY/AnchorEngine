@@ -3,7 +3,9 @@ package top.alwaysready.anchorengine.fabric.client.ui.drawable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.math.MathHelper;
 import top.alwaysready.anchorengine.common.ui.element.AScroll;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
@@ -246,15 +248,18 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if (getChild().filter(child -> child.isMouseOver(mouseX, mouseY))
-                .map(child -> child.mouseScrolled(mouseX,mouseY,horizontalAmount,verticalAmount))
+                .map(child -> child.mouseScrolled(mouseX,mouseY,amount))
                 .orElse(false)) return true;
-        if(getMaxScrollX()>0){
-            this.setOffsetX(getOffsetX() - horizontalAmount * getHScrollSpeed());
-        }
-        if(getMaxScrollY()>0){
-            this.setOffsetY(getOffsetY() - verticalAmount * getVScrollSpeed());
+        if(InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(),InputUtil.GLFW_KEY_LEFT_CONTROL)) {
+            if (getMaxScrollX() > 0) {
+                this.setOffsetX(getOffsetX() - amount * getHScrollSpeed());
+            }
+        } else {
+            if (getMaxScrollY() > 0) {
+                this.setOffsetY(getOffsetY() - amount * getVScrollSpeed());
+            }
         }
         return true;
     }
