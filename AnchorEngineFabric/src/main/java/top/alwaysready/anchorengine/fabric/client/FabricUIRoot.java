@@ -69,8 +69,6 @@ public class FabricUIRoot implements UIRoot {
                 Screen screen = MinecraftClient.getInstance().currentScreen;
                 if(screen instanceof AnchorScreen aScreen){
                     aScreen.closeRemote();
-                } else if (screen != null){
-                    screen.close();
                 }
             });
         });

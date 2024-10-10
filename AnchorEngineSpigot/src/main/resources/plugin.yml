@@ -1,7 +1,7 @@
 name: AnchorEngineSpigot
 version: '${version}'
 main: top.alwaysready.anchorengine.spigot.AnchorEngineSpigot
-api-version: '1.21'
+api-version: '1.18'
 authors: [ AlwaysReadyWby ]
 description: A plugin that works to send custom UI to clients installed with its mod counterpart
 depend: [PlaceholderAPI]
