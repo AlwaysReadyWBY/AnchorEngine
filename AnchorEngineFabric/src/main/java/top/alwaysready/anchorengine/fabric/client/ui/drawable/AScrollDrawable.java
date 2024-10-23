@@ -5,12 +5,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.math.MathHelper;
+import top.alwaysready.anchorengine.common.client.ClientChannelHandler;
+import top.alwaysready.anchorengine.common.net.channel.AbstractAChannel;
 import top.alwaysready.anchorengine.common.ui.element.AScroll;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class AScrollDrawable extends AnchorDrawable<AScroll> {
@@ -27,6 +30,7 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
     private boolean scrollingY = false;
     private ResolvedBoard contentRegion;
     private RenderBounds contentBounds;
+    private UUID context;
 
     public AScrollDrawable(AScroll elem) {
         super(elem);
@@ -82,6 +86,7 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
 
     public void setMaxScrollX(double maxScrollX) {
         this.maxScrollX = maxScrollX;
+        if(offsetX>maxScrollX) offsetX = maxScrollX;
     }
 
     public double getMaxScrollX() {
@@ -90,6 +95,7 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
 
     public void setMaxScrollY(double maxScrollY) {
         this.maxScrollY = maxScrollY;
+        if(offsetY>maxScrollY) offsetY = maxScrollY;
     }
 
     public double getMaxScrollY() {
@@ -118,6 +124,16 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
 
     public double getOffsetY() {
         return offsetY;
+    }
+
+    public UUID getContext() {
+        return context;
+    }
+
+    public void setContext(UUID context) {
+        this.context = context;
+        setOffsetX(0);
+        setOffsetY(0);
     }
 
     @Override
@@ -150,6 +166,11 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
             setMaxScrollY(getVBarWidth()<=0?
                     0:
                     Math.max(0,child.getPreferredHeight() - contentRegion.getHeight()));
+            AnchorUtils.getService(ClientChannelHandler.class)
+                    .map(ClientChannelHandler::getControlChannel)
+                    .map(AbstractAChannel::getContext)
+                    .filter(context -> context.equals(getContext()))
+                    .ifPresent(this::setContext);
         });
     }
 
