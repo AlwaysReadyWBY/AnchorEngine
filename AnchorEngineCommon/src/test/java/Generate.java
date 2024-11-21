@@ -1,8 +1,8 @@
 import top.alwaysready.anchorengine.common.AnchorEngine;
+import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.ui.element.*;
 import top.alwaysready.anchorengine.common.ui.layout.Layout;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinPoint;
-import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 public class Generate {
 
@@ -144,7 +144,9 @@ public class Generate {
         btnText.setReplaceable(true);
         btnText.setTextRaw("%anchor_bq_option_{index_option}%");
         AButton btn = new AButton();
-        btn.setOnClick("betonquest:option%index_option%");
+        ActionInfo onClick = new ActionInfo("betonquest:option");
+        onClick.setParam("index","%index_option%");
+        btn.setOnClick(onClick);
         widget.setText(btnText);
         widget.setButton(btn);
         pane.getChildren().add(widget);

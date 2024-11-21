@@ -1,27 +1,28 @@
 package top.alwaysready.anchorengine.common.ui.element;
 
+import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.util.Optional;
 
 public class AButton extends UIElement{
-    private String onClick;
-    private String onRelease;
+    private ActionInfo onClick;
+    private ActionInfo onRelease;
     private String style;
 
-    public void setOnClick(String onClick) {
+    public void setOnClick(ActionInfo onClick) {
         this.onClick = onClick;
     }
 
-    public void setOnRelease(String onRelease) {
+    public void setOnRelease(ActionInfo onRelease) {
         this.onRelease = onRelease;
     }
 
-    public Optional<String> getOnClick() {
+    public Optional<ActionInfo> getOnClick() {
         return Optional.ofNullable(onClick);
     }
 
-    public Optional<String> getOnRelease() {
+    public Optional<ActionInfo> getOnRelease() {
         return Optional.ofNullable(onRelease);
     }
 

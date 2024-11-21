@@ -1,5 +1,6 @@
 package top.alwaysready.anchorengine.common.service;
 
+import top.alwaysready.anchorengine.common.action.ActionManager;
 import top.alwaysready.anchorengine.common.net.AResourceManager;
 import top.alwaysready.anchorengine.common.string.StringParserManager;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
@@ -19,6 +20,7 @@ public class ServiceManager {
         registerService(StringParserManager.class,new StringParserManager());
         registerService(UIElementManager.class,new UIElementManager());
         registerService(AResourceManager.class,new AResourceManager());
+        registerService(ActionManager.class,new ActionManager());
         setRegistry(LayoutFactory.class,new KeyedRegistry<LayoutFactory>()
                 .register(Layout.BOARD, BoardLayout::new)
                 .register(Layout.LINEAR_HORIZONTAL,()-> new LinearLayout(false))

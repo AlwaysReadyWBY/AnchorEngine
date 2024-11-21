@@ -21,6 +21,7 @@ public class SpigotControlChannel extends AControlChannel {
 
     public SpigotControlChannel(SpigotChannelHandler handler) {
         super(true);
+        setPlayerId(handler.getPlayerId());
         this.handler = handler;
         registerListener(JsonPacketTypes.C2S.DEBUG,this::handleDebug);
         registerListener(JsonPacketTypes.C2S.QUERY,this::handleQuery);

@@ -4,10 +4,12 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationIO;
 import org.bukkit.entity.Player;
+import top.alwaysready.anchorengine.common.net.channel.AChannel;
 import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.server.ServerChannelHandler;
 import top.alwaysready.anchorengine.common.server.ServerChannelManager;
+import top.alwaysready.anchorengine.common.string.StringParser;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.spigot.support.papi.AnchorExpansion;
 import top.alwaysready.readycore.ReadyCore;
@@ -97,23 +99,19 @@ public class AnchorDefaultIO implements ConversationIO {
     }
 
     private void registerActions(AControlChannel channel) {
-        int s=options.size();
-        for (int i=0;i<s;i++) {
-            int finalI = i;
-            channel.registerAction(ACTION_OPTION + finalI, () -> {
-                print(getPlayer().getPlayerListName()+": "+options.get(finalI));
-                conv.passPlayerAnswer(finalI + 1);
-            });
-        }
-        channel.registerAction(JsonPacketUtils.C2S.ACTION_CLOSE,()->{
+        channel.registerAction(ACTION_OPTION, (info,pId) -> {
+            info.getParam("index")
+                    .flatMap(str -> StringParser.INT.parseString(str,Integer.class))
+                    .ifPresent(index->{
+                        if(index<0 || index>=options.size()) return;
+                        print(getPlayer().getPlayerListName()+": "+options.get(index));
+                        conv.passPlayerAnswer(index + 1);
+                    });
+        });
+        channel.registerAction(JsonPacketUtils.C2S.ACTION_CLOSE,(info,pId)->{
             setClosedRemotely(true);
             end();
         });
-    }
-
-    private void clearActions(AControlChannel channel){
-        channel.removeAction(JsonPacketUtils.C2S.ACTION_CLOSE);
-        channel.removeActions(action -> action.startsWith(ACTION_OPTION));
     }
 
     @Override
@@ -128,15 +126,12 @@ public class AnchorDefaultIO implements ConversationIO {
     protected void setOpen(boolean open) {
         if(!open && isOpen()){
             if(!isClosedRemotely()) {
-                JsonPacketUtils.S2C.setScreen(getPlayer().getUniqueId(), null, AControlChannel::clearActions);
+                JsonPacketUtils.S2C.setScreen(getPlayer().getUniqueId(), null);
             } else {
                 AnchorUtils.getService(ServerChannelManager.class)
                         .map(cm -> cm.getHandler(getPlayer().getUniqueId()))
                         .map(ServerChannelHandler::getControlChannel)
-                        .ifPresent(channel -> {
-                            channel.newContext();
-                            clearActions(channel);
-                        });
+                        .ifPresent(AChannel::newContext);
             }
         }
         this.open = open;

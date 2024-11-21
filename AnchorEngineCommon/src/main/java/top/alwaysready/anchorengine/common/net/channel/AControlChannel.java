@@ -5,8 +5,11 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.JsonParseException;
 import top.alwaysready.anchorengine.common.AnchorEngine;
+import top.alwaysready.anchorengine.common.action.Action;
+import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacket;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
+import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.net.packet.json.Push;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
@@ -14,23 +17,33 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class AControlChannel extends AbstractAChannel<JsonPacket> {
-    private final Map<String,Runnable> actionMap = new Hashtable<>();
+    private final Map<String, Action> screenActionMap = new Hashtable<>();
+    private UUID playerId;
 
     public AControlChannel(boolean inCharge) {
         super(inCharge);
-        registerListener(JsonPacketTypes.S2C.ACTION, packet -> {
+        registerListener(JsonPacketTypes.C2S.ACTION, packet -> {
             if(packet.isOutdated()) return true;
-            packet.read(String.class)
-                    .map(actionMap::get)
-                    .ifPresent(Runnable::run);
+            packet.read(ActionInfo.class).ifPresent(info-> {
+                getAction(info.getId()).ifPresent(action -> action.execute(info, getPlayerId()));
+                if(JsonPacketUtils.C2S.ACTION_CLOSE.equals(info.getId())){
+                    clearScreenActions();
+                }
+            });
             return true;
         });
+    }
+
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+    }
+
+    public UUID getPlayerId() {
+        return playerId;
     }
 
     @Override
@@ -70,16 +83,17 @@ public class AControlChannel extends AbstractAChannel<JsonPacket> {
                 ()-> AnchorUtils.info("Failed to handle payload "+payload));
     }
 
-    protected Map<String, Runnable> getActionMap() {
-        return actionMap;
+    protected Map<String, Action> getScreenActionMap() {
+        return screenActionMap;
     }
 
-    public void registerAction(String key,Runnable run){
-        getActionMap().put(key,run);
+    public Optional<Action> getAction(String key){
+        if(key == null) return Optional.empty();
+        return Optional.ofNullable(screenActionMap.get(key));
     }
 
-    public void clearActions(){
-        getActionMap().clear();
+    public void registerAction(String key,Action action){
+        getScreenActionMap().put(key,action);
     }
 
     public void sendPush(Push push){
@@ -96,11 +110,15 @@ public class AControlChannel extends AbstractAChannel<JsonPacket> {
         }
     }
 
+    public void clearScreenActions(){
+        getScreenActionMap().clear();
+    }
+
     public void removeAction(String action) {
-        actionMap.remove(action);
+        screenActionMap.remove(action);
     }
 
     public void removeActions(Predicate<String> removeIf){
-        actionMap.keySet().removeIf(removeIf);
+        screenActionMap.keySet().removeIf(removeIf);
     }
 }

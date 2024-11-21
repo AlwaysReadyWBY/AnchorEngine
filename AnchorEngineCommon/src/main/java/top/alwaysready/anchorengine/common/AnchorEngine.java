@@ -2,6 +2,8 @@ package top.alwaysready.anchorengine.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import top.alwaysready.anchorengine.common.action.Action;
+import top.alwaysready.anchorengine.common.action.ActionManager;
 import top.alwaysready.anchorengine.common.service.ServiceManager;
 import top.alwaysready.anchorengine.common.string.StringReplacer;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
@@ -38,6 +40,8 @@ public class AnchorEngine {
         GsonBuilder builder = new GsonBuilder();
         getServiceManager().getService(UIElementManager.class)
                 .ifPresent(sv -> builder.registerTypeAdapter(UIElement.class,sv));
+        getServiceManager().getService(ActionManager.class)
+                .ifPresent(sv -> builder.registerTypeAdapter(Action.class,sv));
         compactGson = builder.create();
         configGson = builder.setPrettyPrinting().create();
     }
