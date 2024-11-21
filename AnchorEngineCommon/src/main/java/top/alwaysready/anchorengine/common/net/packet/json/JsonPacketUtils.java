@@ -1,6 +1,7 @@
 package top.alwaysready.anchorengine.common.net.packet.json;
 
 import com.google.gson.JsonObject;
+import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.client.ClientChannelHandler;
 import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
 import top.alwaysready.anchorengine.common.server.ServerChannelHandler;
@@ -14,14 +15,14 @@ public interface JsonPacketUtils {
     interface C2S {
         String ACTION_CLOSE = AnchorUtils.toKey("close");
 
-        static void sendAction(String action){
+        static void sendAction(ActionInfo info){
             AnchorUtils.getService(ClientChannelHandler.class)
                     .map(ClientChannelHandler::getControlChannel)
-                    .ifPresent(channel -> channel.send(new JsonPacket(JsonPacketTypes.C2S.ACTION,action)));
+                    .ifPresent(channel -> channel.send(new JsonPacket(JsonPacketTypes.C2S.ACTION,info)));
         }
 
         static void sendClose() {
-            sendAction(ACTION_CLOSE);
+            sendAction(new ActionInfo(ACTION_CLOSE));
         }
     }
     interface S2C {
@@ -30,6 +31,7 @@ public interface JsonPacketUtils {
                     .map(chMan -> chMan.getHandler(playerId))
                     .map(ServerChannelHandler::getControlChannel)
                     .ifPresent(channel -> {
+                        channel.clearScreenActions();
                         channel.newContext();
                         init.accept(channel);
                         if (key == null){

@@ -12,10 +12,11 @@ import java.util.UUID;
 public class SpigotChannelHandler implements ServerChannelHandler {
     private Player player;
     private final UUID id;
-    private final SpigotControlChannel chCtrl = new SpigotControlChannel(this);
+    private final SpigotControlChannel chCtrl;
 
     public SpigotChannelHandler(UUID id) {
         this.id = id;
+        chCtrl = new SpigotControlChannel(this);
         chCtrl.setOutput(bytes -> getPlayer().ifPresent(player ->
                 player.sendPluginMessage(ReadyCore.getInstance().getPlugin(), AChannel.CONTROL, bytes)));
     }

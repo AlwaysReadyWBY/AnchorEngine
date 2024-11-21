@@ -8,6 +8,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
+import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.ui.element.AButton;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
@@ -18,8 +19,8 @@ import java.util.Optional;
 @Environment(EnvType.CLIENT)
 public class AButtonDrawable extends AnchorDrawable<AButton> {
     private String style = AButton.Styles.MODERN;
-    private String onClick;
-    private String onRelease;
+    private ActionInfo onClick;
+    private ActionInfo onRelease;
     private boolean active = true;
     private boolean lastHover = false;
 
@@ -43,19 +44,19 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
         return active;
     }
 
-    public void setOnClick(String onClick) {
+    public void setOnClick(ActionInfo onClick) {
         this.onClick = onClick;
     }
 
-    public Optional<String> getOnClick() {
+    public Optional<ActionInfo> getOnClick() {
         return Optional.ofNullable(onClick);
     }
 
-    public void setOnRelease(String onRelease) {
+    public void setOnRelease(ActionInfo onRelease) {
         this.onRelease = onRelease;
     }
 
-    public Optional<String> getOnRelease() {
+    public Optional<ActionInfo> getOnRelease() {
         return Optional.ofNullable(onRelease);
     }
 
@@ -79,8 +80,8 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
         setPreferredWidth(region.getWidth());
         setPreferredHeight(region.getHeight());
         setStyle(region.getReplacer().apply(getElement().getStyle()));
-        setOnClick(getElement().getOnClick().map(region.getReplacer()::apply).orElse(null));
-        setOnRelease(getElement().getOnRelease().map(region.getReplacer()::apply).orElse(null));
+        setOnClick(getElement().getOnClick().map(info->info.getReplaced(region.getReplacer())).orElse(null));
+        setOnRelease(getElement().getOnRelease().map(info->info.getReplaced(region.getReplacer())).orElse(null));
     }
 
     @Override

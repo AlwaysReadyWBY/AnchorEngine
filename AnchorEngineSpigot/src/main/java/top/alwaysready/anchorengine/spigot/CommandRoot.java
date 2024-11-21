@@ -51,10 +51,40 @@ public class CommandRoot extends ReadyCommandTree {
                 });
             }
         },"push");
+        addChild(new SimpleCommand("%help.command.menu%") {
+            @Override
+            public void execute(CommandSender sender, String[] args, int index) {
+                if(!checkPerm(sender,"anchor.menu.base")) return;
+                if(index >= args.length) {
+                    getConfig().info(sender,"%info.insufficient-arg%");
+                    showHelp(sender);
+                    return;
+                }
+                String key = args[index++];
+                Player player;
+                if(index >= args.length) {
+                    if(!checkPlayer(sender)) return;
+                    player = (Player) sender;
+                } else {
+                    if(!checkPerm(sender,"anchor.menu.others")) return;
+                    player = ReadyCore.getInstance().getPlugin().getServer().getPlayer(args[index+1]);
+                    if(player == null){
+                        getConfig().info(sender,"%info.player-not-found%",args[index+1]);
+                        return;
+                    }
+                }
+                this.<AnchorEngineConfig>getConfig().getMenu(key).ifPresentOrElse(
+                        menu -> {
+                            if(!menu.getPerms().stream().allMatch(perm -> checkPerm(sender,perm))) return;
+                            menu.open(player.getUniqueId());
+                        },
+                        ()->getConfig().info(sender,"%info.menu-not-found%",key));
+            }
+        },"menu");
         addChild(new SimpleCommand("%help.command.show%") {
             @Override
             public void execute(CommandSender sender, String[] args, int index) {
-                if(!checkPerm(sender,"anchor.show")) return;
+                if(!checkPerm(sender,"anchor.show.base")) return;
                 if(index >= args.length) {
                     getConfig().info(sender,"%info.insufficient-arg%");
                     showHelp(sender);
@@ -66,6 +96,7 @@ public class CommandRoot extends ReadyCommandTree {
                     if(!checkPlayer(sender)) return;
                     player = (Player) sender;
                 } else {
+                    if(!checkPerm(sender,"anchor.show.others")) return;
                     player = ReadyCore.getInstance().getPlugin().getServer().getPlayer(args[index+1]);
                     if(player == null){
                         CommandRoot.this.getConfig().info(sender,"%info.player-not-found%",args[index+1]);
@@ -78,12 +109,13 @@ public class CommandRoot extends ReadyCommandTree {
         addChild(new SimpleCommand("%help.command.close%") {
             @Override
             public void execute(CommandSender sender, String[] args, int index) {
-                if(!checkPerm(sender,"anchor.show")) return;
+                if(!checkPerm(sender,"anchor.close.base")) return;
                 Player player;
                 if(index >= args.length) {
                     if(!checkPlayer(sender)) return;
                     player = (Player) sender;
                 } else {
+                    if(!checkPerm(sender,"anchor.close.others")) return;
                     player = ReadyCore.getInstance().getPlugin().getServer().getPlayer(args[index+1]);
                     if(player == null){
                         CommandRoot.this.getConfig().info(sender,"%info.player-not-found%",args[index+1]);

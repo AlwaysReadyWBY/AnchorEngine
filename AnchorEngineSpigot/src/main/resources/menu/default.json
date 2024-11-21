@@ -1,0 +1,17 @@
+[
+  {
+    "id": "main",
+    "ui": "anchor_engine:main_menu",
+    "actions": {
+      "anchor_engine:demo": {
+        "type": "console",
+        "commands": [
+          "say %player_name% 点击了示例按钮"
+        ]
+      },
+      "anchor_engine:quit": {
+        "type": "close"
+      }
+    }
+  }
+]

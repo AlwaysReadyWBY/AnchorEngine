@@ -23,6 +23,22 @@ permissions:
       push:
         default: op
       show:
-        default: op
+        children:
+          base:
+            default: op
+          others:
+            default: op
+      close:
+        children:
+          base:
+            default: op
+          others:
+            default: op
+      menu:
+        children:
+          base:
+            default: true
+          others:
+            default: op
       version:
         default: true

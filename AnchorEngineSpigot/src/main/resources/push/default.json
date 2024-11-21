@@ -91,7 +91,10 @@
                   }
                 },
                 "button": {
-                  "onClick": "betonquest:option%index_option%"
+                  "onClick": {
+                    "id":"betonquest:option",
+                    "index": "%index_option%"
+                  }
                 },
                 "layout": {
                   "pin2": "btn_rb"
@@ -157,6 +160,78 @@
         }
       },
       "type": "anchor_engine:group"
+    },
+    "anchor_engine:main_menu": {
+      "type": "anchor_engine:group",
+      "layout": {
+        "pinMap": {
+          "scroll_lt": {
+            "xGrow": "0.3",
+            "yGrow": "0.2"
+          },
+          "scroll_rb": {
+            "xGrow": "0.7",
+            "yGrow": "0.8"
+          }
+        }
+      },
+      "child": [
+        {
+          "type": "anchor_engine:scroll",
+          "layout": {
+            "pin1": "scroll_lt",
+            "pin2": "scroll_rb"
+          },
+          "child": {
+            "child": [
+              {
+                "text": {
+                  "raw": "示例",
+                  "layout": {
+                    "hAlign": "0.5",
+                    "vAlign": "0.5"
+                  }
+                },
+                "button": {
+                  "onClick": "anchor_engine:demo"
+                },
+                "layout": {
+                  "pin2": "btn_rb"
+                },
+                "type": "anchor_engine:button_widget"
+              },
+              {
+                "text": {
+                  "raw": "关闭",
+                  "layout": {
+                    "hAlign": "0.5",
+                    "vAlign": "0.5"
+                  }
+                },
+                "button": {
+                  "onClick": "anchor_engine:quit"
+                },
+                "layout": {
+                  "pin2": "btn_rb"
+                },
+                "type": "anchor_engine:button_widget"
+              }
+            ],
+            "layoutMode": "anchor_engine:linear_vertical",
+            "layout": {
+              "pin2": "right_top",
+              "pinMap": {
+                "btn_rb": {
+                  "yOffset": "16",
+                  "xGrow": "1"
+                }
+              },
+              "vWrap": "1"
+            },
+            "type": "anchor_engine:group"
+          }
+        }
+      ]
     }
   }
 }
