@@ -65,9 +65,12 @@ public class AnchorScreen extends Screen {
     @Override
     public void close() {
         MinecraftClient.getInstance().setScreen(then);
-        if(!isClosedRemotely()){
-            JsonPacketUtils.C2S.sendClose();
-        }
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+        sendClose();
     }
 
     public boolean isClosedRemotely() {
@@ -75,7 +78,17 @@ public class AnchorScreen extends Screen {
     }
 
     public void closeRemote() {
-        closedRemotely = true;
+        setClosedRemotely();
         close();
+    }
+
+    public void sendClose(){
+        if(!isClosedRemotely()){
+            JsonPacketUtils.C2S.sendClose();
+        }
+    }
+
+    public void setClosedRemotely() {
+        closedRemotely = true;
     }
 }
