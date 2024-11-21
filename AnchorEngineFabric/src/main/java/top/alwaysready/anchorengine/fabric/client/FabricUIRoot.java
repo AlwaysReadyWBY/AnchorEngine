@@ -57,7 +57,11 @@ public class FabricUIRoot implements UIRoot {
             AnchorScreen screen = new AnchorScreen(Text.of("Custom Screen"));
             screen.setElement(elem);
             sch.executeSync(()->{
-                MinecraftClient.getInstance().setScreenAndRender(screen);
+                MinecraftClient client = MinecraftClient.getInstance();
+                if(client.currentScreen instanceof AnchorScreen prev) {
+                    prev.setClosedRemotely();
+                }
+                client.setScreenAndRender(screen);
             });
         });
     }
