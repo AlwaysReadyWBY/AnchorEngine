@@ -4,7 +4,8 @@ main: top.alwaysready.anchorengine.spigot.AnchorEngineSpigot
 api-version: '1.18'
 authors: [ AlwaysReadyWby ]
 description: A plugin that works to send custom UI to clients installed with its mod counterpart
-depend: [PlaceholderAPI]
+depend:
+  - PlaceholderAPI
 softdepend:
   - BetonQuest
 

@@ -32,8 +32,8 @@ repositories {
 dependencies {
     implementation "top.alwaysready:ReadyCoreShaded:1.0-SNAPSHOT"
     implementation project(":AnchorEngineCommon")
+    implementation "me.clip:placeholderapi:2.11.6" transitive false
     shadow "org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT"
-    shadow "me.clip:placeholderapi:2.11.6" transitive false
     shadow "org.betonquest:betonquest:2.1.3" transitive false
 }
 
@@ -49,11 +49,14 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
+        options.release.set(targetJavaVersion)
     }
 }
 
 tasks.named('shadowJar', ShadowJar){
+    dependencies {
+        exclude(dependency('me.clip:placeholderapi:2.11.6'))
+    }
     archiveBaseName.set("${project.name}")
     archiveClassifier.set('')
     archiveVersion.set("${project.version}")
