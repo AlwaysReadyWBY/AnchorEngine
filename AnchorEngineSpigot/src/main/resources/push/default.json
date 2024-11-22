@@ -248,6 +248,213 @@
           }
         }
       ]
+    },
+    "anchor_engine:login": {
+      "child": [
+        {
+          "child": [
+            {
+              "url": "res:minecraft:textures/gui/sprites/popup/background.png",
+              "clip": {
+                "pinMap": {
+                  "9p_lt": {
+                    "xOffset": "6",
+                    "yOffset": "6"
+                  },
+                  "9p_rb": {
+                    "xOffset": "-6",
+                    "yOffset": "-6",
+                    "xGrow": "1",
+                    "yGrow": "1"
+                  }
+                }
+              },
+              "fillMode": "SCALE_9",
+              "type": "anchor_engine:image"
+            },
+            {
+              "child": {
+                "child": [
+                  {
+                    "replaceable": true,
+                    "raw": "%server_name%",
+                    "layout": {
+                      "pin1": "fix_lt",
+                      "pin2": "fix_rb",
+                      "hAlign": "0.5",
+                      "vAlign": "0.5"
+                    },
+                    "type": "anchor_engine:text"
+                  },
+                  {
+                    "child": [
+                      {
+                        "url": "res:minecraft:textures/gui/sprites/widget/text_field.png",
+                        "clip": {
+                          "pinMap": {
+                            "9p_lt": {
+                              "xOffset": "2",
+                              "yOffset": "2"
+                            },
+                            "9p_rb": {
+                              "xOffset": "-2",
+                              "yOffset": "-2",
+                              "xGrow": "1",
+                              "yGrow": "1"
+                            }
+                          }
+                        },
+                        "fillMode": "SCALE_9",
+                        "type": "anchor_engine:image"
+                      },
+                      {
+                        "var": "anchor_passwd",
+                        "focusRequired": "0",
+                        "obfuscated": "1",
+                        "onEnter": {
+                          "passwd": "%anchor_passwd%",
+                          "id": "anchor_engine:login"
+                        },
+                        "layout": {
+                          "pin1": "content_lt",
+                          "pin2": "content_rb"
+                        },
+                        "type": "anchor_engine:input"
+                      }
+                    ],
+                    "layout": {
+                      "pin1": "fix_lt",
+                      "pin2": "fix_rb",
+                      "pinMap": {
+                        "content_rb": {
+                          "xOffset": "-2",
+                          "yOffset": "-2",
+                          "xGrow": "1",
+                          "yGrow": "1"
+                        },
+                        "content_lt": {
+                          "xOffset": "2",
+                          "yOffset": "2"
+                        }
+                      }
+                    },
+                    "type": "anchor_engine:group"
+                  },
+                  {
+                    "text": {
+                      "replaceable": false,
+                      "text": {
+                        "text": "登录"
+                      },
+                      "layout": {
+                        "hAlign": "0.5",
+                        "vAlign": "0.5"
+                      }
+                    },
+                    "button": {
+                      "onClick": {
+                        "passwd": "%anchor_passwd%",
+                        "id": "anchor_engine:login"
+                      },
+                      "style": "anchor_engine:vanilla"
+                    },
+                    "layout": {
+                      "pin1": "fix_lt",
+                      "pin2": "fix_rb"
+                    },
+                    "type": "anchor_engine:button_widget"
+                  },
+                  {
+                    "text": {
+                      "replaceable": false,
+                      "text": {
+                        "text": "注册"
+                      },
+                      "layout": {
+                        "hAlign": "0.5",
+                        "vAlign": "0.5"
+                      }
+                    },
+                    "button": {
+                      "onClick": {
+                        "passwd": "%anchor_passwd%",
+                        "id": "anchor_engine:register"
+                      },
+                      "style": "anchor_engine:vanilla"
+                    },
+                    "layout": {
+                      "pin1": "fix_lt",
+                      "pin2": "fix_rb"
+                    },
+                    "type": "anchor_engine:button_widget"
+                  }
+                ],
+                "layoutMode": "anchor_engine:linear_vertical",
+                "layout": {
+                  "pin2": "item_rb",
+                  "pinMap": {
+                    "fix_rb": {
+                      "yOffset": "18",
+                      "xGrow": "1"
+                    },
+                    "fix_lt": {
+                      "xOffset": "6",
+                      "yOffset": "2"
+                    }
+                  },
+                  "vWrap": "1"
+                },
+                "type": "anchor_engine:group"
+              },
+              "layout": {
+                "pin1": "content_lt",
+                "pin2": "content_rb",
+                "pinMap": {
+                  "item_rb": {
+                    "yOffset": "20",
+                    "xGrow": "1"
+                  }
+                }
+              },
+              "type": "anchor_engine:scroll"
+            }
+          ],
+          "layout": {
+            "pin1": "boxLT",
+            "pin2": "boxRB",
+            "pinMap": {
+              "content_rb": {
+                "xOffset": "-6",
+                "yOffset": "-6",
+                "xGrow": "1",
+                "yGrow": "1"
+              },
+              "wrapRB": {
+                "yOffset": "12",
+                "xGrow": "1"
+              },
+              "content_lt": {
+                "xOffset": "6",
+                "yOffset": "6"
+              }
+            }
+          },
+          "type": "anchor_engine:group"
+        }
+      ],
+      "layout": {
+        "pinMap": {
+          "boxRB": {
+            "xGrow": "0.75",
+            "yGrow": "0.75"
+          },
+          "boxLT": {
+            "xGrow": "0.25",
+            "yGrow": "0.25"
+          }
+        }
+      },
+      "type": "anchor_engine:group"
     }
   }
 }

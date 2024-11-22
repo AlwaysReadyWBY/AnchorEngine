@@ -191,7 +191,7 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
         return getBounds().map(bounds -> mouseY >= bounds.top()
                         && mouseY <= bounds.bottom()
                         && mouseX >= bounds.left()
-                        && mouseY <= bounds.right())
+                        && mouseX <= bounds.right())
                 .orElse(false);
     }
     protected abstract void renderImpl(DrawContext context, RenderBounds parentBounds, int mouseX, int mouseY, float delta);

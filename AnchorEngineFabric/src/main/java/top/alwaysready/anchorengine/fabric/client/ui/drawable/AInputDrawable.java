@@ -2,7 +2,6 @@ package top.alwaysready.anchorengine.fabric.client.ui.drawable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -41,6 +40,7 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
     private String cursorLine = "";
     private String var = null;
     private boolean focusRequired = true;
+    private boolean obfuscated;
     private ActionInfo onEnter = null;
 
     public AInputDrawable(AInput elem) {
@@ -53,6 +53,14 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
 
     public void setMultiline(boolean multiline) {
         this.multiline = multiline;
+    }
+
+    public boolean isObfuscated() {
+        return obfuscated;
+    }
+
+    public void setObfuscated(boolean obfuscated) {
+        this.obfuscated = obfuscated;
     }
 
     public void setFocusRequired(boolean focusRequired) {
@@ -85,6 +93,7 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
         }
         setFocusRequired(getElement().isFocusRequired(region.getReplacer()));
         setMultiline(getElement().isMultiline(region.getReplacer()));
+        setObfuscated(getElement().isObfuscated(region.getReplacer()));
         setLineHeight(getElement().getLineHeight(region.getReplacer()));
         setColor(getElement().getColor(region.getReplacer()));
         setOnEnter(getElement().getOnEnter().map(info -> info.getReplaced(region.getReplacer())).orElse(null));
@@ -109,7 +118,9 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
         int cursorLineStart = cursor == 0 ? 0 : text.lastIndexOf('\n', cursor - 1) + 1;
         int cursorLineEnd = text.indexOf('\n',cursorLineStart+1);
         if(cursorLineEnd<0) cursorLineEnd = text.length();
-        int lWidth = renderer.getWidth(text.substring(cursorLineStart, cursor));
+        int lWidth = cursorLineStart>=text.length()? 0:renderer.getWidth(cursor>text.length()?
+                text.substring(cursorLineStart):
+                text.substring(cursorLineStart, cursor));
         cursorX = lWidth+offsetX;
         if(cursorX<0){
             offsetX -= cursorX;
@@ -133,15 +144,15 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
                 if(line.beginIndex()<=selEnd && selEnd<line.endIndex()){
                     selEndY = i*getLineHeight();
                 }
-                selStartX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selStart))+offsetX));
-                selEndX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selEnd))+offsetX));
+                selStartX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selStart))))+offsetX;
+                selEndX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selEnd))))+offsetX;
                 i++;
             }
         } else {
             int selStart = Math.max(editBox.getSelection().beginIndex(),cursorLineStart);
             int selEnd = Math.min(editBox.getSelection().endIndex(),cursorLineEnd);
-            selStartX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selStart))+offsetX));
-            selEndX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selEnd))+offsetX));
+            selStartX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selStart))))+offsetX;
+            selEndX = Math.min(width,Math.max(0,renderer.getWidth(text.substring(cursorLineStart,selEnd))))+offsetX;
         }
     }
 
@@ -244,6 +255,7 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
             if(isMultiline()) {
                 int cursorY = (int) (y + editBox.getCurrentLineIndex()*getLineHeight());
                 String txt = editBox.getText();
+                if(isObfuscated()) txt = "*".repeat(txt.length());
                 //Render selection
                 if(editBox.hasSelection()) {
                     context.fill(x+offsetX+selStartX, (int)(selStartY-getLineHeight()), (int) bounds.right(), (int) selStartY,COLOR_SELECTION);
@@ -273,7 +285,7 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
                 }
                 //Render text
                 context.drawTextWithShadow(client.textRenderer,
-                        cursorLine,
+                        isObfuscated()? "*".repeat(cursorLine.length()):cursorLine,
                         x+offsetX,
                         (int) y,
                         getColor());

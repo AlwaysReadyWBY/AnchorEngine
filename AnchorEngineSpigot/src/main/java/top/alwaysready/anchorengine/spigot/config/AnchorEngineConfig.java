@@ -1,11 +1,13 @@
-package top.alwaysready.anchorengine.spigot;
+package top.alwaysready.anchorengine.spigot.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
+import com.google.gson.annotations.SerializedName;
 import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.server.menu.Menu;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
+import top.alwaysready.anchorengine.spigot.AnchorEngineSpigot;
 import top.alwaysready.readycore.config.ReadyConfig;
 
 import java.io.File;
@@ -17,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AnchorEngineConfig extends ReadyConfig {
     private List<String> autoPush = new ArrayList<>();
+    private LoginConfig login;
     private transient final Map<String, Menu> menuMap = new ConcurrentHashMap<>();
 
     public AnchorEngineConfig(AnchorEngineSpigot plugin) {
@@ -61,5 +64,10 @@ public class AnchorEngineConfig extends ReadyConfig {
 
     public List<String> getAutoPush() {
         return autoPush;
+    }
+
+    public LoginConfig getLoginConfig() {
+        if(login == null) login = new LoginConfig();
+        return login;
     }
 }

@@ -13,5 +13,39 @@
         "type": "close"
       }
     }
+  },
+  {
+    "id": "login",
+    "ui": "anchor_engine:login",
+    "actions": {
+      "anchor_engine:login": {
+        "type": "list",
+        "actions": [
+          {
+            "type": "command",
+            "commands": [
+              "login %passwd%"
+            ]
+          },
+          {
+            "type": "close"
+          }
+        ]
+      },
+      "anchor_engine:register": {
+        "type": "list",
+        "actions": [
+          {
+            "type": "command",
+            "commands": [
+              "register %passwd% %passwd%"
+            ]
+          },
+          {
+            "type": "close"
+          }
+        ]
+      }
+    }
   }
 ]

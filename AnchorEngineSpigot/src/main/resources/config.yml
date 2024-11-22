@@ -2,3 +2,6 @@ version: 1
 lang: zh_cn
 autoPush:
   - default.json
+login:
+  menu: login
+  delay: 10

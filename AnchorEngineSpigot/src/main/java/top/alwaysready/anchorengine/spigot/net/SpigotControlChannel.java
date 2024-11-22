@@ -8,8 +8,9 @@ import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
 import top.alwaysready.anchorengine.common.net.packet.json.PacketQuery;
 import top.alwaysready.anchorengine.common.net.packet.json.Push;
 import top.alwaysready.anchorengine.common.service.FileService;
+import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
-import top.alwaysready.anchorengine.spigot.AnchorEngineConfig;
+import top.alwaysready.anchorengine.spigot.config.AnchorEngineConfig;
 
 import java.io.File;
 import java.util.Collection;
@@ -50,6 +51,11 @@ public class SpigotControlChannel extends AControlChannel {
                                         .filter(File::exists)
                                         .forEach(this::sendPush));
                     });
+                    AnchorUtils.getService(AnchorEngineConfig.class).ifPresent(cfg-> cfg.getLoginConfig().getMenu()
+                            .flatMap(cfg::getMenu)
+                            .ifPresent(menu -> AnchorUtils.getService(ScheduleService.class)
+                                    .ifPresent(sch -> sch.schedule(()->menu.open(player.getUniqueId()),
+                                            cfg.getLoginConfig().getDelay() * 50L))));
                     defaultPushSent = true;
                 }
                 Push push = new Push();

@@ -13,6 +13,7 @@ public class AInput extends UIElement{
     private String color;
     private String autofill;
     private String focusRequired;
+    private String obfuscated;
     private ActionInfo onEnter;
 
     public void setVar(String var) {
@@ -40,6 +41,21 @@ public class AInput extends UIElement{
 
     public boolean isMultiline(StringReplacer replacer){
         return StringParser.INT.parseString(replacer.apply(getMultiline()), Integer.class)
+                .map(i->i>0)
+                .orElse(false);
+    }
+
+    public void setObfuscated(String obfuscated) {
+        if(obfuscated == null) obfuscated = "0";
+        this.obfuscated = obfuscated;
+    }
+
+    public String getObfuscated() {
+        return obfuscated;
+    }
+
+    public boolean isObfuscated(StringReplacer replacer){
+        return StringParser.INT.parseString(replacer.apply(getObfuscated()), Integer.class)
                 .map(i->i>0)
                 .orElse(false);
     }

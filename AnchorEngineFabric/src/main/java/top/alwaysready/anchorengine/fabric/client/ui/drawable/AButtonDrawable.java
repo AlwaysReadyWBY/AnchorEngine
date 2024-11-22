@@ -69,7 +69,6 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
             setFocused(false);
             return false;
         }
-        setFocused(true);
         playDownSound();
         getOnClick().ifPresent(JsonPacketUtils.C2S::sendAction);
         return true;
@@ -100,7 +99,7 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
                     context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     RenderSystem.enableBlend();
                     RenderSystem.enableDepthTest();
-                    context.drawGuiTexture(VANILLA_TEXTURES.get(isActive(), isFocused()),
+                    context.drawGuiTexture(VANILLA_TEXTURES.get(isActive(), isFocused() || hovered),
                             (int) bounds.left(),
                             (int) bounds.top(),
                             (int) bounds.width(),
