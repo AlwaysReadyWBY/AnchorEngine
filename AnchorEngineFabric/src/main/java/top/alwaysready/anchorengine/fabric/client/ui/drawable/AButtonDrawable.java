@@ -66,7 +66,6 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
             setFocused(false);
             return false;
         }
-        setFocused(true);
         playDownSound();
         getOnClick().ifPresent(JsonPacketUtils.C2S::sendAction);
         return true;

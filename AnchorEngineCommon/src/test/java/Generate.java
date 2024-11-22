@@ -4,10 +4,156 @@ import top.alwaysready.anchorengine.common.ui.element.*;
 import top.alwaysready.anchorengine.common.ui.layout.Layout;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinPoint;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 public class Generate {
 
     public static void main(String[] args) {
-        System.out.println(AnchorEngine.getInstance().getConfigGson().toJson(generateElement(), UIElement.class));
+        try(PrintStream out = new PrintStream(System.out,true, StandardCharsets.UTF_8)) {
+            out.println(AnchorEngine.getInstance().getConfigGson().toJson(generateLogin(), UIElement.class));
+        }
+    }
+
+    public static UIElement generateLogin(){
+        AGroup group = new AGroup();
+        PinPoint lt = new PinPoint();
+        lt.setXGrow("0.25");
+        lt.setYGrow("0.25");
+        PinPoint rb = new PinPoint();
+        rb.setXGrow("0.75");
+        rb.setYGrow("0.75");
+        group.getLayout().getPinMap().put("boxLT",lt);
+        group.getLayout().getPinMap().put("boxRB",rb);
+
+        AGroup box = new AGroup();
+        box.getLayout().setPin1("boxLT");
+        box.getLayout().setPin2("boxRB");
+
+        PinPoint rbw = new PinPoint();
+        rbw.setXGrow("1");
+        rbw.setYOffset("12");
+        box.getLayout().getPinMap().put("wrapRB",rbw);
+
+        AImage boxBg = new AImage();
+        boxBg.setUrlFromResource("minecraft:textures/gui/sprites/popup/background.png");
+        boxBg.setFillMode(AImage.Fill.SCALE_9);
+        PinPoint p9lt = new PinPoint();
+        p9lt.setXOffset("6");
+        p9lt.setYOffset("6");
+        PinPoint p9rb = new PinPoint();
+        p9rb.setXGrow("1");
+        p9rb.setYGrow("1");
+        p9rb.setXOffset("-6");
+        p9rb.setYOffset("-6");
+        boxBg.getClip().getPinMap().put("9p_lt",p9lt);
+        boxBg.getClip().getPinMap().put("9p_rb",p9rb);
+        box.getChildren().add(boxBg);
+        box.getLayout().getPinMap().put("content_lt",p9lt);
+        box.getLayout().getPinMap().put("content_rb",p9rb);
+
+        AScroll scr = new AScroll();
+        scr.getLayout().setPin1("content_lt");
+        scr.getLayout().setPin2("content_rb");
+        PinPoint itemRB = new PinPoint();
+        itemRB.setXGrow("1");
+        itemRB.setYOffset("20");
+        scr.getLayout().getPinMap().put("item_rb",itemRB);
+
+        AGroup pane = new AGroup();
+        PinPoint fixLT = new PinPoint();
+        fixLT.setXOffset("6");
+        fixLT.setYOffset("2");
+        PinPoint fixRB = new PinPoint();
+        fixRB.setXGrow("1");
+        fixRB.setYOffset("18");
+        pane.setLayoutMode(Layout.LINEAR_VERTICAL);
+        pane.getLayout().setVWrap("1");
+        pane.getLayout().setPin2("item_rb");
+        pane.getLayout().getPinMap().put("fix_lt",fixLT);
+        pane.getLayout().getPinMap().put("fix_rb",fixRB);
+        scr.setChild(pane);
+
+        AText title = new AText();
+        title.setReplaceable(true);
+        title.setTextRaw("%server_name%");
+        title.getLayout().setHAlign("0.5");
+        title.getLayout().setVAlign("0.5");
+        title.getLayout().setPin1("fix_lt");
+        title.getLayout().setPin2("fix_rb");
+        pane.getChildren().add(title);
+
+        AGroup inWidget = new AGroup();
+
+        AImage inputBg = new AImage();
+        inputBg.setUrlFromResource("minecraft:textures/gui/sprites/widget/text_field.png");
+        inputBg.setFillMode(AImage.Fill.SCALE_9);
+        PinPoint p9ltIn = new PinPoint();
+        p9ltIn.setXOffset("2");
+        p9ltIn.setYOffset("2");
+        PinPoint p9rbIn = new PinPoint();
+        p9rbIn.setXGrow("1");
+        p9rbIn.setYGrow("1");
+        p9rbIn.setXOffset("-2");
+        p9rbIn.setYOffset("-2");
+        inputBg.getClip().getPinMap().put("9p_lt",p9ltIn);
+        inputBg.getClip().getPinMap().put("9p_rb",p9rbIn);
+        inWidget.getChildren().add(inputBg);
+
+        inWidget.getLayout().getPinMap().put("content_lt",p9ltIn);
+        inWidget.getLayout().getPinMap().put("content_rb",p9rbIn);
+
+        AInput input = new AInput();
+        input.setVar("anchor_passwd");
+        ActionInfo login = new ActionInfo("anchor_engine:login");
+        login.setParam("passwd","%anchor_passwd%");
+        input.setOnEnter(login);
+        input.setObfuscated("1");
+        input.setFocusRequired("0");
+        input.getLayout().setPin1("content_lt");
+        input.getLayout().setPin2("content_rb");
+        inWidget.getChildren().add(input);
+
+        inWidget.getLayout().setPin1("fix_lt");
+        inWidget.getLayout().setPin2("fix_rb");
+        pane.getChildren().add(inWidget);
+
+        AButtonWidget loginWidget = new AButtonWidget();
+        AText loginTxt = new AText();
+        loginTxt.getLayout().setHAlign("0.5");
+        loginTxt.getLayout().setVAlign("0.5");
+        loginTxt.setTextRaw("登录");
+        loginWidget.setText(loginTxt);
+        AButton loginBtn = new AButton();
+        loginBtn.setOnClick(login);
+        loginBtn.setStyle(AButton.Styles.VANILLA);
+        loginWidget.setButton(loginBtn);
+
+        loginWidget.getLayout().setPin1("fix_lt");
+        loginWidget.getLayout().setPin2("fix_rb");
+        pane.getChildren().add(loginWidget);
+
+        AButtonWidget regWidget = new AButtonWidget();
+        AText regTxt = new AText();
+        regTxt.getLayout().setHAlign("0.5");
+        regTxt.getLayout().setVAlign("0.5");
+        regTxt.setTextRaw("注册");
+        regWidget.setText(regTxt);
+        AButton regBtn = new AButton();
+        ActionInfo reg = new ActionInfo("anchor_engine:register");
+        reg.setParam("passwd","%anchor_passwd%");
+        regBtn.setOnClick(reg);
+        regBtn.setStyle(AButton.Styles.VANILLA);
+        regWidget.setButton(regBtn);
+
+        regWidget.getLayout().setPin1("fix_lt");
+        regWidget.getLayout().setPin2("fix_rb");
+        pane.getChildren().add(regWidget);
+
+        box.getChildren().add(scr);
+
+        group.getChildren().add(box);
+        return group;
     }
 
     public static UIElement generateElement(){

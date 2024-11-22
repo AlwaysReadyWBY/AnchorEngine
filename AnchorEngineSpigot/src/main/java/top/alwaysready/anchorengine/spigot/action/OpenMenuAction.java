@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import top.alwaysready.anchorengine.common.action.Action;
 import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
-import top.alwaysready.anchorengine.spigot.AnchorEngineConfig;
+import top.alwaysready.anchorengine.spigot.config.AnchorEngineConfig;
 import top.alwaysready.anchorengine.spigot.AnchorEngineSpigot;
 
 import java.util.UUID;

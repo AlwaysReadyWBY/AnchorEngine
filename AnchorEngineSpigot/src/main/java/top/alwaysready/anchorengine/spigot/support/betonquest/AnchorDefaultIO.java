@@ -152,6 +152,7 @@ public class AnchorDefaultIO implements ConversationIO {
     @Override
     public void end() {
         setOpen(false);
+        clear();
         conv.endConversation();
     }
 
