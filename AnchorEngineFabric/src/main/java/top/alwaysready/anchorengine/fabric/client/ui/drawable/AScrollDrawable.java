@@ -210,7 +210,6 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
         this.updateScrollingState(mouseX, mouseY, button);
         if (this.isMouseOver(mouseX, mouseY)) {
             return this.scrollingX || this.scrollingY || getChild()
-                    .filter(child -> child.isMouseOver(mouseX,mouseY))
                     .stream().anyMatch(child -> child.mouseClicked(mouseX, mouseY, button));
         } else {
             return false;
@@ -223,7 +222,6 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
             scrollingX = scrollingY = false;
         }
         return getChild()
-                .filter(AnchorDrawable::isFocused)
                 .map(child -> child.mouseReleased(mouseX,mouseY,button))
                 .orElse(false);
     }
@@ -261,7 +259,7 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
                 return true;
             })).orElse(false)) return true;
         }
-        return getChild().filter(child -> child.isMouseOver(mouseX,mouseY))
+        return getChild()
                 .map(child -> child.mouseDragged(mouseX,mouseY,button,deltaX,deltaY))
                 .orElse(false);
     }
@@ -278,6 +276,21 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
             this.setOffsetY(getOffsetY() - verticalAmount * getVScrollSpeed());
         }
         return true;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return getChild().map(child -> child.keyPressed(keyCode, scanCode, modifiers)).orElse(false);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        return getChild().map(child -> child.keyReleased(keyCode, scanCode, modifiers)).orElse(false);
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        return getChild().map(child->child.charTyped(chr, modifiers)).orElse(false);
     }
 
     public void renderBar(DrawContext context, RenderBounds bounds, RenderBounds contentBounds){

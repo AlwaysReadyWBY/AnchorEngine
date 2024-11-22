@@ -1,12 +1,12 @@
 [
   {
-    "id": "main",
-    "ui": "anchor_engine:main_menu",
+    "id": "demo",
+    "ui": "anchor_engine:demo_menu",
     "actions": {
       "anchor_engine:demo": {
         "type": "console",
         "commands": [
-          "say %player_name% 点击了示例按钮"
+          "say %player_name% 用示例菜单说: %msg%"
         ]
       },
       "anchor_engine:quit": {

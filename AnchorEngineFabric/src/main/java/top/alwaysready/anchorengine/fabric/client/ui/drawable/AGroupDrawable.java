@@ -106,30 +106,65 @@ public class AGroupDrawable extends AnchorDrawable<AGroup> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return getChildren().stream()
-                .filter(child -> child.isMouseOver(mouseX,mouseY))
-                .anyMatch(child -> child.mouseClicked(mouseX,mouseY,button));
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.mouseClicked(mouseX, mouseY, button) || ret;
+        }
+        return ret;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return getChildren().stream()
-                .filter(child -> child.isMouseOver(mouseX,mouseY))
-                .anyMatch(child -> child.mouseReleased(mouseX,mouseY,button));
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.mouseReleased(mouseX, mouseY, button) || ret;
+        }
+        return ret;
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return getChildren().stream()
-                .filter(child -> child.isMouseOver(mouseX,mouseY))
-                .anyMatch(child -> child.mouseDragged(mouseX,mouseY,button,deltaX,deltaY));
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.mouseDragged(mouseX,mouseY,button,deltaX,deltaY) || ret;
+        }
+        return ret;
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        return getChildren().stream()
-                .filter(child -> child.isMouseOver(mouseX,mouseY))
-                .anyMatch(child -> child.mouseScrolled(mouseX,mouseY,horizontalAmount,verticalAmount));
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.mouseScrolled(mouseX,mouseY,horizontalAmount,verticalAmount) || ret;
+        }
+        return ret;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.keyPressed(keyCode, scanCode, modifiers) || ret;
+        }
+        return ret;
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.keyReleased(keyCode, scanCode, modifiers) || ret;
+        }
+        return ret;
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        boolean ret = false;
+        for (AnchorDrawable<?> child : getChildren()) {
+            ret = child.charTyped(chr, modifiers) || ret;
+        }
+        return ret;
     }
 
     @Override

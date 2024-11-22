@@ -16,7 +16,7 @@ import top.alwaysready.anchorengine.fabric.client.ui.drawable.ADrawableManager;
 @Environment(EnvType.CLIENT)
 public class AnchorScreen extends Screen {
     private ResolvedBoard region;
-    private AnchorDrawable<?> renderer;
+    private AnchorDrawable<?> anchorDrawable;
     private Screen then;
     private boolean closedRemotely = false;
 
@@ -32,25 +32,25 @@ public class AnchorScreen extends Screen {
     public void setElement(UIElement elem) {
         AnchorUtils.getService(ADrawableManager.class)
                 .flatMap(sv -> sv.newRenderer(elem))
-                .ifPresent(this::setRenderer);
+                .ifPresent(this::setAnchorDrawable);
     }
 
-    public void setRenderer(AnchorDrawable<?> renderer) {
-        this.renderer = renderer;
+    public void setAnchorDrawable(AnchorDrawable<?> anchorDrawable) {
+        this.anchorDrawable = anchorDrawable;
         clearChildren();
-        addDrawableChild(renderer);
+        addDrawableChild(anchorDrawable);
     }
 
-    public AnchorDrawable<?> getRenderer() {
-        return renderer;
+    public AnchorDrawable<?> getAnchorDrawable() {
+        return anchorDrawable;
     }
 
     public void update(){
         AnchorUtils.getService(ClientVarManager.class).ifPresent(cvm ->
                 region = new ResolvedBoard(width, height, cvm.createChild()));
-        renderer = getRenderer();
-        if (renderer == null) return;
-        renderer.update(getRegion());
+        anchorDrawable = getAnchorDrawable();
+        if (anchorDrawable == null) return;
+        anchorDrawable.update(getRegion());
     }
 
     public void setThen(Screen then) {
@@ -71,6 +71,27 @@ public class AnchorScreen extends Screen {
     public void removed() {
         super.removed();
         sendClose();
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if(super.keyPressed(keyCode, scanCode, modifiers)) return true;
+        AnchorDrawable<?> drawable = getAnchorDrawable();
+        return drawable!=null && drawable.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        if(super.keyReleased(keyCode, scanCode, modifiers)) return true;
+        AnchorDrawable<?> drawable = getAnchorDrawable();
+        return drawable!=null && drawable.keyReleased(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        if(super.charTyped(chr,modifiers)) return true;
+        AnchorDrawable<?> drawable = getAnchorDrawable();
+        return drawable!=null && drawable.charTyped(chr, modifiers);
     }
 
     public boolean isClosedRemotely() {

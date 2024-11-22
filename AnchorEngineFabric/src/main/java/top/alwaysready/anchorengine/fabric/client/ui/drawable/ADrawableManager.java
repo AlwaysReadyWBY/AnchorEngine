@@ -18,6 +18,7 @@ public class ADrawableManager {
         registerFactory(AButtonWidget.class,AGroupDrawable::new);
         registerFactory(AImage.class, AImageDrawable::new);
         registerFactory(AText.class,ATextDrawable::new);
+        registerFactory(AInput.class,AInputDrawable::new);
         registerFactory(AScroll.class,AScrollDrawable::new);
         registerFactory(AButton.class, AButtonDrawable::new);
     }

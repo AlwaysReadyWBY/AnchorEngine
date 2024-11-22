@@ -5,21 +5,24 @@ import com.google.gson.annotations.JsonAdapter;
 import top.alwaysready.anchorengine.common.string.StringReplacer;
 
 import java.lang.reflect.Type;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @JsonAdapter(ActionInfo.Adapter.class)
 public class ActionInfo {
     private final String id;
     private final Map<String,String> params;
+    private final List<ActionInfo> infoList = new ArrayList<>();
 
     public ActionInfo(String id){
         this.id = id;
         params = new Hashtable<>();
     }
 
-    public void setParam(String key,String value){
+    public List<ActionInfo> getInfoList() {
+        return infoList;
+    }
+
+    public void setParam(String key, String value){
         params.put(key,value);
     }
 
@@ -33,6 +36,10 @@ public class ActionInfo {
 
     public String getId() {
         return id;
+    }
+
+    public boolean isList(){
+        return getId() == null;
     }
 
     protected Map<String, String> getParams() {
@@ -66,12 +73,24 @@ public class ActionInfo {
                 obj.keySet().forEach(key -> ret.setParam(key,obj.get(key).getAsString()));
                 return ret;
             }
+            if(json.isJsonArray()){
+                JsonArray arr = json.getAsJsonArray();
+                ActionInfo ret = new ActionInfo(null);
+                List<ActionInfo> list = ret.getInfoList();
+                arr.forEach(elem -> list.add(context.deserialize(elem,ActionInfo.class)));
+                return ret;
+            }
             return null;
         }
 
         @Override
         public JsonElement serialize(ActionInfo src, Type typeOfSrc, JsonSerializationContext context) {
             if(src == null) return JsonNull.INSTANCE;
+            if(src.isList()){
+                JsonArray arr = new JsonArray();
+                src.getInfoList().forEach(info -> arr.add(context.serialize(info)));
+                return arr;
+            }
             if(src.hasParam()){
                 JsonObject obj = new JsonObject();
                 src.getParams().forEach(obj::addProperty);

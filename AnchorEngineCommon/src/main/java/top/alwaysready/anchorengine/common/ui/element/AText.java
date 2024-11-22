@@ -80,7 +80,7 @@ public class AText extends UIElement{
     }
 
     public String getColor() {
-        if(color == null) color = "ffffff";
+        if(color == null) color = "ffffffff";
         return color;
     }
 

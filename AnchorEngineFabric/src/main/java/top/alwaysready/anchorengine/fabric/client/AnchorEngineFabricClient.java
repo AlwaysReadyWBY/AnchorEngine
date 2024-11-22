@@ -15,6 +15,7 @@ import top.alwaysready.anchorengine.common.service.FileService;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.ui.element.AGroup;
 import top.alwaysready.anchorengine.common.ui.element.AImage;
+import top.alwaysready.anchorengine.common.ui.element.AInput;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinPoint;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
@@ -107,6 +108,25 @@ public class AnchorEngineFabricClient implements ClientModInitializer {
     }
 
     private int debug(CommandContext<FabricClientCommandSource> context) {
+        AGroup group = new AGroup();
+        PinPoint lt = new PinPoint();
+        lt.setXGrow("0.25");
+        lt.setYGrow("0.25");
+        PinPoint rb = new PinPoint();
+        rb.setXGrow("0.75");
+        rb.setYGrow("0.75");
+        group.getLayout().getPinMap().put("inLT", lt);
+        group.getLayout().getPinMap().put("inRB", rb);
+        AInput input = new AInput();
+        input.setAutofill("test");
+        input.setVar("anchor_debug");
+        input.getLayout().setPin1("inLT");
+        input.getLayout().setPin2("inRB");
+        group.getChildren().add(input);
+        AnchorUtils.getService(UIRoot.class).ifPresent(uiRoot -> {
+            AnchorUtils.getService(ScheduleService.class).ifPresent(sch ->
+                    sch.scheduleAsync(() -> uiRoot.setScreen(group), 100L));
+        });
         return 1;
     }
 }

@@ -161,7 +161,7 @@
       },
       "type": "anchor_engine:group"
     },
-    "anchor_engine:main_menu": {
+    "anchor_engine:demo_menu": {
       "type": "anchor_engine:group",
       "layout": {
         "pinMap": {
@@ -185,6 +185,19 @@
           "child": {
             "child": [
               {
+                "layout": {
+                  "pin2": "btn_rb"
+                },
+                "focusRequired": "1",
+                "autofill": "测试信息",
+                "var": "anchor_debug",
+                "type": "anchor_engine:input",
+                "onEnter": {
+                  "id": "anchor_engine:demo",
+                  "msg": "%anchor_debug%"
+                }
+              },
+              {
                 "text": {
                   "raw": "示例",
                   "layout": {
@@ -193,7 +206,10 @@
                   }
                 },
                 "button": {
-                  "onClick": "anchor_engine:demo"
+                  "onClick": {
+                    "id": "anchor_engine:demo",
+                    "msg": "%anchor_debug%"
+                  }
                 },
                 "layout": {
                   "pin2": "btn_rb"
