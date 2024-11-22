@@ -27,10 +27,22 @@ public class ClientVarManager extends StringReplacer {
     }
 
     public void registerClientVar(String key,Supplier<String> supplier){
+        if(key == null || supplier==null) return;
         clientVarMap.put(key,supplier);
     }
 
+    public boolean hasClientVar(String key){
+        if(key == null) return false;
+        return clientVarMap.containsKey(key);
+    }
+
+    public Optional<String> getClientVar(String key){
+        if(key == null) return Optional.empty();
+        return Optional.ofNullable(clientVarMap.get(key)).map(Supplier::get);
+    }
+
     public void removeClientVar(String key){
+        if(key==null) return;
         clientVarMap.remove(key);
     }
 

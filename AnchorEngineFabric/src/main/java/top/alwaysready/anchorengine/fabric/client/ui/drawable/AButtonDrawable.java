@@ -62,6 +62,10 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(!isMouseOver(mouseX, mouseY)) {
+            setFocused(false);
+            return false;
+        }
         setFocused(true);
         playDownSound();
         getOnClick().ifPresent(JsonPacketUtils.C2S::sendAction);
@@ -70,7 +74,7 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        setFocused(false);
+        if(!isMouseOver(mouseX, mouseY)) return false;
         getOnRelease().ifPresent(JsonPacketUtils.C2S::sendAction);
         return true;
     }

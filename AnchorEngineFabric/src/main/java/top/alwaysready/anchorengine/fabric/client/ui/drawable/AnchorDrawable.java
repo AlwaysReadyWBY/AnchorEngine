@@ -29,6 +29,7 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
     private boolean vWrap = true;
     private boolean focused = false;
     private int index = 0;
+    private float totalDelta = 0;
 
     private final Object renderLock = new Object();
     private boolean updating;
@@ -196,6 +197,7 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
     protected abstract void renderImpl(DrawContext context, RenderBounds parentBounds, int mouseX, int mouseY, float delta);
 
     public void render(DrawContext context, RenderBounds parentBounds, int mouseX, int mouseY, float delta) {
+        totalDelta += delta;
         synchronized (renderLock) {
             bounds = getRegion().map(ResolvedBoard::getBounds)
                     .map(parentBounds::intersect)
@@ -227,5 +229,9 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         return Element.super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    }
+
+    public float getTotalDelta() {
+        return totalDelta;
     }
 }

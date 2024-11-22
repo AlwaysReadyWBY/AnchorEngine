@@ -31,15 +31,15 @@ public class ATextDrawable extends AnchorDrawable<AText> {
         Text text;
         try {
             text = Text.Serializer.fromJson(AnchorEngine.getInstance().getCompactGson()
-                            .fromJson(getElement().getText(region.getReplacer()), JsonElement.class));
-        } catch (IllegalStateException e){
+                    .fromJson(getElement().getText(region.getReplacer()), JsonElement.class));
+        } catch (IllegalStateException e) {
             text = Text.empty();
         }
         region.getReplacer().getAsDouble(getElement().getLineHeight()).ifPresent(this::setLineHeight);
         region.getReplacer().getAsHexInt(getElement().getColor()).ifPresent(this::setColor);
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
-        setLines(renderer.wrapLines(text,(int)region.getWidth()).stream()
-                .map(line -> new TextLine(line,renderer.getWidth(line)))
+        setLines(renderer.wrapLines(text, (int) region.getWidth()).stream()
+                .map(line -> new TextLine(line, renderer.getWidth(line)))
                 .collect(Collectors.toList()));
         setPreferredWidth(getLines().stream().map(TextLine::width).max(Integer::compareTo).orElse(0));
         setPreferredHeight(getLineHeight() * getLines().size());
@@ -72,19 +72,19 @@ public class ATextDrawable extends AnchorDrawable<AText> {
     @Override
     public void renderImpl(DrawContext context, RenderBounds parentBounds, int mouseX, int mouseY, float delta) {
         getBounds().ifPresent(bounds -> {
-                    context.enableScissor((int) bounds.left(), (int) bounds.top(), (int) bounds.right(), (int) bounds.bottom());
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    double y = (getRegion().get().getTop() + getAlignOffsetY());
-                    double minY = bounds.top() - getLineHeight();
-                    int x = (int) (bounds.left() + getAlignOffsetX());
-                    for (TextLine line : getLines()) {
-                        if(y >= minY) {
-                            context.drawTextWithShadow(client.textRenderer, line.text(), x, (int) y, getColor());
-                        }
-                        y += getLineHeight();
-                        if(y > bounds.bottom()) break;
-                    }
-                    context.disableScissor();
-                });
+            context.enableScissor((int) bounds.left(), (int) bounds.top(), (int) bounds.right(), (int) bounds.bottom());
+            MinecraftClient client = MinecraftClient.getInstance();
+            double y = (getRegion().get().getTop() + getAlignOffsetY());
+            double minY = bounds.top() - getLineHeight();
+            int x = (int) (bounds.left() + getAlignOffsetX());
+            for (TextLine line : getLines()) {
+                if (y >= minY) {
+                    context.drawTextWithShadow(client.textRenderer, line.text(), x, (int) y, getColor());
+                }
+                y += getLineHeight();
+                if (y > bounds.bottom()) break;
+            }
+            context.disableScissor();
+        });
     }
 }

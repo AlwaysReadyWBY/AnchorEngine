@@ -28,14 +28,21 @@ public class AControlChannel extends AbstractAChannel<JsonPacket> {
         super(inCharge);
         registerListener(JsonPacketTypes.C2S.ACTION, packet -> {
             if(packet.isOutdated()) return true;
-            packet.read(ActionInfo.class).ifPresent(info-> {
-                getAction(info.getId()).ifPresent(action -> action.execute(info, getPlayerId()));
-                if(JsonPacketUtils.C2S.ACTION_CLOSE.equals(info.getId())){
-                    clearScreenActions();
-                }
-            });
+            packet.read(ActionInfo.class).ifPresent(this::executeAction);
             return true;
         });
+    }
+
+    protected void executeAction(ActionInfo info) {
+        if(info.isList()){
+            info.getInfoList().forEach(this::executeAction);
+            return;
+        } else {
+            getAction(info.getId()).ifPresent(action -> action.execute(info, getPlayerId()));
+        }
+        if(JsonPacketUtils.C2S.ACTION_CLOSE.equals(info.getId())){
+            clearScreenActions();
+        }
     }
 
     public void setPlayerId(UUID playerId) {
