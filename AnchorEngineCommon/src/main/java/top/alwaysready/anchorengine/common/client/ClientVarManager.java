@@ -75,4 +75,8 @@ public class ClientVarManager extends StringReplacer {
         handler.getControlChannel().send(new JsonPacket(JsonPacketTypes.C2S.QUERY,query));
         return CompletableFuture.completedFuture(true);
     }
+
+    public void clearRequest(){
+        varRequestMap.clear();
+    }
 }

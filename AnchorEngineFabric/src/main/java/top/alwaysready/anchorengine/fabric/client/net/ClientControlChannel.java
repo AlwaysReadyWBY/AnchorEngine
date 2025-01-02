@@ -11,6 +11,9 @@ import top.alwaysready.anchorengine.common.net.packet.json.Push;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
+import java.util.Objects;
+import java.util.UUID;
+
 @Environment(EnvType.CLIENT)
 public class ClientControlChannel extends AControlChannel {
     public ClientControlChannel() {
@@ -46,5 +49,11 @@ public class ClientControlChannel extends AControlChannel {
                     push.getVarMap().forEach(cvm::map));
         });
         return true;
+    }
+
+    @Override
+    public void setContext(UUID context) {
+        if(!Objects.equals(context,getContext())) AnchorUtils.getService(ClientVarManager.class).ifPresent(ClientVarManager::clearRequest);
+        super.setContext(context);
     }
 }
