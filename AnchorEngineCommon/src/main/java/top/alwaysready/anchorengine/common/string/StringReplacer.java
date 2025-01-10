@@ -1,5 +1,7 @@
 package top.alwaysready.anchorengine.common.string;
 
+import top.alwaysready.anchorengine.common.util.expression.Expression;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.Supplier;
@@ -39,6 +41,9 @@ public class StringReplacer {
     }
 
     protected Optional<String> getMapped(String from){
+        if(from.startsWith("=")){
+            return Optional.of(String.valueOf(new Expression(from.substring(1)).calc(this)));
+        }
         Supplier<String> calc = remap.get(from);
         String to = calc ==null? null: calc.get();
         if(to!=null) return Optional.of(to);

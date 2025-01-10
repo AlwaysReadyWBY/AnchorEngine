@@ -21,6 +21,8 @@ public class ADrawableManager {
         registerFactory(AInput.class,AInputDrawable::new);
         registerFactory(AScroll.class,AScrollDrawable::new);
         registerFactory(AButton.class, AButtonDrawable::new);
+        registerFactory(ARect.class,ARectDrawable::new);
+        registerFactory(AReference.class,ARefDrawable::new);
     }
 
     public <T extends UIElement> void registerFactory(Class<T> type,Function<T, AnchorDrawable<?>> fun){

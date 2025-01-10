@@ -1,7 +1,6 @@
 package top.alwaysready.anchorengine.spigot.net;
 
 import com.google.gson.JsonObject;
-import me.clip.placeholderapi.PlaceholderAPI;
 import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacket;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
@@ -11,6 +10,7 @@ import top.alwaysready.anchorengine.common.service.FileService;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.spigot.config.AnchorEngineConfig;
+import top.alwaysready.anchorengine.spigot.util.SpigotPlayerReplacer;
 
 import java.io.File;
 import java.util.Collection;
@@ -60,7 +60,9 @@ public class SpigotControlChannel extends AControlChannel {
                 }
                 Push push = new Push();
                 Map<String, String> map = push.getVarMap();
-                query.getVarList().forEach(var -> map.put(var,PlaceholderAPI.setPlaceholders(player,"%"+var+"%")));
+                SpigotPlayerReplacer replacer = new SpigotPlayerReplacer(player);
+                replacer.setParent(getReplacer());
+                query.getVarList().forEach(var -> map.put(var,replacer.apply("%"+var+"%")));
                 send(new JsonPacket(JsonPacketTypes.S2C.PUSH,push));
             });
         });

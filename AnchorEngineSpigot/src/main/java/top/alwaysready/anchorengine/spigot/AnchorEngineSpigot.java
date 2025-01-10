@@ -60,7 +60,10 @@ public class AnchorEngineSpigot extends JavaPlugin {
         registerActions();
         registerListeners();
 
-        AnchorUtils.getService(AnchorEngineConfig.class).ifPresent(AnchorEngineConfig::loadMenu);
+        AnchorUtils.getService(AnchorEngineConfig.class).ifPresent(anchorEngineConfig -> {
+            anchorEngineConfig.loadMenu();
+            anchorEngineConfig.loadOverlay();
+        });
     }
 
     private void registerActions(){
@@ -85,7 +88,10 @@ public class AnchorEngineSpigot extends JavaPlugin {
 
     public void reload() {
         ReadyCore.getInstance().getConfig().load(CONFIG_VERSION);
-        AnchorUtils.getService(AnchorEngineConfig.class).ifPresent(AnchorEngineConfig::loadMenu);
+        AnchorUtils.getService(AnchorEngineConfig.class).ifPresent(anchorEngineConfig -> {
+            anchorEngineConfig.loadMenu();
+            anchorEngineConfig.loadOverlay();
+        });
         ReadyCore.getInstance().getConfig().info("%info.load%");
     }
 
@@ -101,7 +107,6 @@ public class AnchorEngineSpigot extends JavaPlugin {
     @Override
     public void onDisable() {
         ReadyCore.unload();
-        AnchorEngine.unload();
     }
 
     @Override

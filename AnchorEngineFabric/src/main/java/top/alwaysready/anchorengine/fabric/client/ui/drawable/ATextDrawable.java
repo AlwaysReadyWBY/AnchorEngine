@@ -11,6 +11,7 @@ import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.ui.element.AText;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
+import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -76,7 +77,7 @@ public class ATextDrawable extends AnchorDrawable<AText> {
             MinecraftClient client = MinecraftClient.getInstance();
             double y = (getRegion().get().getTop() + getAlignOffsetY());
             double minY = bounds.top() - getLineHeight();
-            int x = (int) (bounds.left() + getAlignOffsetX());
+            int x = (int) (getRegion().get().getLeft() + getAlignOffsetX());
             for (TextLine line : getLines()) {
                 if (y >= minY) {
                     context.drawTextWithShadow(client.textRenderer, line.text(), x, (int) y, getColor());

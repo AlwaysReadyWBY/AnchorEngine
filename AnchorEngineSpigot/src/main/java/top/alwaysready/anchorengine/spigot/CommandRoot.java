@@ -1,5 +1,6 @@
 package top.alwaysready.anchorengine.spigot;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -7,13 +8,19 @@ import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.server.ServerChannelHandler;
 import top.alwaysready.anchorengine.common.server.ServerChannelManager;
 import top.alwaysready.anchorengine.common.service.FileService;
+import top.alwaysready.anchorengine.common.string.StringParser;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.spigot.config.AnchorEngineConfig;
+import top.alwaysready.anchorengine.spigot.util.SpigotPlayerReplacer;
 import top.alwaysready.readycore.ReadyCore;
 import top.alwaysready.readycore.command.ReadyCommandTree;
 import top.alwaysready.readycore.command.SimpleCommand;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.UUID;
 
 public class CommandRoot extends ReadyCommandTree {
     public CommandRoot() {
@@ -82,6 +89,62 @@ public class CommandRoot extends ReadyCommandTree {
                         ()->getConfig().info(sender,"%info.menu-not-found%",key));
             }
         },"menu");
+        addChild(new SimpleCommand("%help.command.overlay%") {
+            @Override
+            public void execute(CommandSender sender, String[] args, int index) {
+                if(!checkPerm(sender,"anchor.overlay.base")) return;
+                if(index >= args.length) {
+                    getConfig().info(sender,"%info.insufficient-arg%");
+                    showHelp(sender);
+                    return;
+                }
+                String key = args[index++];
+                Player player;
+                if(index >= args.length) {
+                    if(!checkPlayer(sender)) return;
+                    player = (Player) sender;
+                } else {
+                    if(!checkPerm(sender,"anchor.overlay.others")) return;
+                    player = ReadyCore.getInstance().getPlugin().getServer().getPlayer(args[index+1]);
+                    if(player == null){
+                        getConfig().info(sender,"%info.player-not-found%",args[index+1]);
+                        return;
+                    }
+                }
+                this.<AnchorEngineConfig>getConfig().getOverlay(key).ifPresentOrElse(
+                        overlay -> {
+//                            if(!overlay.getPerms().stream().allMatch(perm -> checkPerm(sender,perm))) return;
+                            overlay.show(player.getUniqueId(),new SpigotPlayerReplacer(player));
+                        },
+                        ()->getConfig().info(sender,"%info.overlay-not-found%",key));
+            }
+        },"overlay");
+        addChild(new SimpleCommand("%help.command.danmaku%") {
+            @Override
+            public void execute(CommandSender sender, String[] args, int index) {
+                if(!checkPerm(sender,"anchor.danmaku")) return;
+                if(index >= args.length) {
+                    getConfig().info(sender,"%info.insufficient-arg%");
+                    showHelp(sender);
+                    return;
+                }
+                long millis = StringParser.LONG.parseString(args[index++], Long.class).orElse(10000L);
+                String text = ((sender instanceof Player player)? player.getDisplayName()+": ":"")
+                        +(index>=args.length? "":String.join(" ", Arrays.copyOfRange(args,index,args.length)));
+                double y = Math.random()*0.6;
+                this.<AnchorEngineConfig>getConfig().getOverlay("danmaku").ifPresentOrElse(
+                        overlay -> {
+                            Map<String,String> varMap = new Hashtable<>();
+                            varMap.put("danmaku_text",text);
+                            varMap.put("danmaku_y",String.valueOf(y));
+                            varMap.put("danmaku_time",String.valueOf(millis));
+                            Bukkit.getOnlinePlayers().forEach(player ->{
+                                overlay.show(player.getUniqueId(),new SpigotPlayerReplacer(player), "danmaku-"+UUID.randomUUID(),varMap);
+                            });
+                        },
+                        ()->getConfig().info(sender,"%info.overlay-not-found%","danmaku"));
+            }
+        },"danmaku");
         addChild(new SimpleCommand("%help.command.show%") {
             @Override
             public void execute(CommandSender sender, String[] args, int index) {

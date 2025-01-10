@@ -62,8 +62,8 @@ public abstract class AbstractAChannel<T> implements AChannel<T>{
     @Override
     public void accept(T payload) {
         if(payload == null) return;
-        if(listenerMap.values().stream().noneMatch(listener -> listener.handle(payload))){
-            AnchorUtils.debug("Failed to handle payload "+payload);
+        if (listenerMap.values().stream().noneMatch(listener -> listener.handle(payload))) {
+            AnchorUtils.debug("Failed to handle payload " + payload);
         }
     }
 }

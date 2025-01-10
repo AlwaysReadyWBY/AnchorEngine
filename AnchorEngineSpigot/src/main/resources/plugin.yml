@@ -40,5 +40,13 @@ permissions:
             default: true
           others:
             default: op
+      overlay:
+        children:
+          base:
+            default: false
+          others:
+            default: op
+      danmaku:
+        default: op
       version:
         default: true

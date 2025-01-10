@@ -16,21 +16,25 @@ public class SpigotScheduleService implements ScheduleService {
 
     @Override
     public void executeSync(Runnable run) {
+        if(!plugin.isEnabled()) return;
         plugin.getServer().getScheduler().runTask(plugin,run);
     }
 
     @Override
     public void scheduleAsync(Runnable run) {
+        if(!plugin.isEnabled()) return;
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,run);
     }
 
     @Override
     public void scheduleAsync(Runnable run, long delay) {
+        if(!plugin.isEnabled()) return;
         plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin,run,delay/50);
     }
 
     @Override
     public void loopAsync(Supplier<CompletableFuture<Boolean>> run, long interval) {
+        if(!plugin.isEnabled()) return;
         interval /= 50;
         new BukkitRunnable() {
             @Override

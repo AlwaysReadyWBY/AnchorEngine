@@ -38,7 +38,7 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
     private int selEndX = 0;
     private double selEndY = 0;
     private String cursorLine = "";
-    private String var = null;
+    private String key = null;
     private boolean focusRequired = true;
     private boolean obfuscated;
     private ActionInfo onEnter = null;
@@ -85,11 +85,11 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
 
     @Override
     protected void updateForRegion(ResolvedBoard region) {
-        var = getElement().getVar(region.getReplacer());
-        String str = editBox==null? getAutofill(var,region.getReplacer()): editBox.getText();
-        if(var!=null){
+        key = getElement().getKey(region.getReplacer());
+        String str = editBox==null? getAutofill(key,region.getReplacer()): editBox.getText();
+        if(key !=null){
             AnchorUtils.getService(ClientVarManager.class).ifPresent(cvm ->
-                    cvm.registerClientVar(var,()->getEditBox().map(EditBox::getText).orElse("")));
+                    cvm.registerClientVar(key,()->getEditBox().map(EditBox::getText).orElse("")));
         }
         setFocusRequired(getElement().isFocusRequired(region.getReplacer()));
         setMultiline(getElement().isMultiline(region.getReplacer()));
@@ -108,9 +108,9 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
         setPreferredHeight(isMultiline()?editBox.getLineCount()*getLineHeight():getLineHeight());
     }
 
-    private String getAutofill(String var,StringReplacer replacer) {
+    private String getAutofill(String key,StringReplacer replacer) {
         return AnchorUtils.getService(ClientVarManager.class)
-                .flatMap(cvm -> cvm.getClientVar(var))
+                .flatMap(cvm -> cvm.getClientVar(key))
                 .orElseGet(()->getElement().getAutofill(replacer));
     }
 

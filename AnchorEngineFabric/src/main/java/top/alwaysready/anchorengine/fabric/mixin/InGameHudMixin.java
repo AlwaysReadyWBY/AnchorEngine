@@ -22,7 +22,7 @@ import top.alwaysready.anchorengine.fabric.client.FabricUIRoot;
 public class InGameHudMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/hud/InGameHud;renderStatusEffectOverlay(Lnet/minecraft/client/gui/DrawContext;)V"))
+    @Inject(method = "render",at = @At(value = "HEAD"))
     private void renderCustomHud(DrawContext context,float tickDelta, CallbackInfo ci){
         AnchorUtils.getService(UIRoot.class)
                 .filter(FabricUIRoot.class::isInstance)
@@ -31,7 +31,27 @@ public class InGameHudMixin {
                     AnchorUtils.getService(ClientVarManager.class).ifPresent(cvm -> {
                         ui.setHudRegion(new ResolvedBoard(context.getScaledWindowWidth(),context.getScaledWindowHeight(),cvm.createChild()));
                         if(!client.options.hudHidden) {
-                            ui.getHudRoot().ifPresent(hudRoot -> hudRoot.render(context, 0, 0, tickDelta));
+                            try {
+                                ui.getHudRoot().ifPresent(hudRoot -> hudRoot.render(context, 0, 0, tickDelta));
+                            }catch (Exception e){
+                                AnchorUtils.warn("Failed to render hud",e);
+                            }
+                        }
+                    });
+                });
+    }
+
+    @Inject(method = "render",at = @At(value = "TAIL"))
+    private void renderCustomOverlay(DrawContext context,float tickDelta, CallbackInfo ci){
+        AnchorUtils.getService(UIRoot.class)
+                .filter(FabricUIRoot.class::isInstance)
+                .map(FabricUIRoot.class::cast)
+                .ifPresent(ui -> {
+                    ui.getOverlays().forEach(overlay -> {
+                        try {
+                            overlay.render(context, 0, 0, tickDelta);
+                        }catch (Exception e){
+                            AnchorUtils.warn("Failed to render overlay "+overlay.getInfo().getId(),e);
                         }
                     });
                 });

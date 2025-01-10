@@ -7,6 +7,7 @@ import top.alwaysready.anchorengine.common.client.ui.UIRoot;
 import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacket;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
+import top.alwaysready.anchorengine.common.net.packet.json.OverlayInfo;
 import top.alwaysready.anchorengine.common.net.packet.json.Push;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
@@ -21,6 +22,7 @@ public class ClientControlChannel extends AControlChannel {
         registerListener(JsonPacketTypes.S2C.PUSH,this::handlePush);
         registerListener(JsonPacketTypes.S2C.DEBUG,this::handleDebug);
         registerListener(JsonPacketTypes.S2C.SET_SCREEN,this::handleSetScreen);
+        registerListener(JsonPacketTypes.S2C.ADD_OVERLAY,this::handleAddOverlay);
         registerListener(JsonPacketTypes.S2C.CLOSE_SCREEN,this::handleCloseScreen);
     }
 
@@ -36,6 +38,13 @@ public class ClientControlChannel extends AControlChannel {
         return true;
     }
 
+    private boolean handleAddOverlay(JsonPacket packet) {
+        AnchorUtils.getService(UIRoot.class).ifPresent(uiRoot -> {
+            packet.read(OverlayInfo.class).ifPresent(uiRoot::addOverlay);
+        });
+        return true;
+    }
+
     private boolean handleDebug(JsonPacket jsonPacket) {
         AnchorUtils.info("Received debug message!");
         return true;
@@ -45,6 +54,9 @@ public class ClientControlChannel extends AControlChannel {
         packet.read(Push.class).ifPresent(push -> {
             AnchorUtils.getService(UIElementManager.class).ifPresent(uiMan ->
                     push.getUIMap().forEach(uiMan::registerElement));
+            if(push.getUIMap().containsKey(UIRoot.UI_HUD)){
+                AnchorUtils.getService(UIRoot.class).ifPresent(uiRoot -> uiRoot.setHud(null));
+            }
             AnchorUtils.getService(ClientVarManager.class).ifPresent(cvm ->
                     push.getVarMap().forEach(cvm::map));
         });

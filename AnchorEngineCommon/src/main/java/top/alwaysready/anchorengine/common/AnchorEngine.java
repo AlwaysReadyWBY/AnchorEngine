@@ -17,10 +17,6 @@ public class AnchorEngine {
         return instance;
     }
 
-    public static void unload(){
-        instance = null;
-    }
-
     private ServiceManager svMan;
     private StringReplacer replacer;
     private Gson compactGson;

@@ -129,14 +129,18 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
             return;
         }
         setRegion(parent.resolveChild(getElement().getLayout()).orElse(null));
-        setHWrap(region.getReplacer().getAsInt(getElement().getLayout().getHWrap())
-                .map(i -> i>0)
-                .orElse(false));
-        setVWrap(region.getReplacer().getAsInt(getElement().getLayout().getVWrap())
-                .map(i -> i>0)
-                .orElse(false));
-        setHAlign(region.getReplacer().getAsDouble(getElement().getLayout().getHAlign()).orElse(0d));
-        setVAlign(region.getReplacer().getAsDouble(getElement().getLayout().getVAlign()).orElse(0d));
+        getRegion().ifPresent(region -> {
+            parent.getReplacer().map("delta",String.valueOf(getTotalDelta()));
+            getElement().getVarMap().forEach(region.getReplacer()::map);
+            setHWrap(region.getReplacer().getAsInt(getElement().getLayout().getHWrap())
+                    .map(i -> i>0)
+                    .orElse(false));
+            setVWrap(region.getReplacer().getAsInt(getElement().getLayout().getVWrap())
+                    .map(i -> i>0)
+                    .orElse(false));
+            setHAlign(region.getReplacer().getAsDouble(getElement().getLayout().getHAlign()).orElse(0d));
+            setVAlign(region.getReplacer().getAsDouble(getElement().getLayout().getVAlign()).orElse(0d));
+        });
     }
 
     protected abstract void updateForRegion(ResolvedBoard region);

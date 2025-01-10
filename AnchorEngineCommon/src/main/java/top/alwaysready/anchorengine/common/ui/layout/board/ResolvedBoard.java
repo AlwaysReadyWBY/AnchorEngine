@@ -1,11 +1,14 @@
 package top.alwaysready.anchorengine.common.ui.layout.board;
 
 import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.util.AnchorUtils;
+
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Optional;
 
 public class ResolvedBoard {
+    private StringReplacer parentReplacer;
     private StringReplacer replacer;
     private final double left;
     private final double right;
@@ -112,8 +115,13 @@ public class ResolvedBoard {
         return shifted;
     }
 
+    private StringReplacer getParentReplacer() {
+        if(parentReplacer == null) parentReplacer = getReplacer();
+        return parentReplacer;
+    }
+
     public ResolvedBoard newReplacer(){
-        replacer = replacer.createChild();
+        replacer = getParentReplacer().createChild();
         return this;
     }
 

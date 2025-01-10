@@ -1,6 +1,7 @@
 package top.alwaysready.anchorengine.spigot.util;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.entity.Player;
 import top.alwaysready.anchorengine.common.string.StringReplacer;
 
@@ -17,6 +18,8 @@ public class SpigotPlayerReplacer extends StringReplacer {
     protected Optional<String> getMapped(String from) {
         Optional<String> ret = super.getMapped(from);
         if(ret.isPresent()) return ret;
+        if(!player.isOnline()) return Optional.empty();
+        if(PlaceholderAPIPlugin.getInstance() == null) return Optional.empty();
         return Optional.of(PlaceholderAPI.setPlaceholders(player, "%" + from + "%"));
     }
 }

@@ -104,7 +104,7 @@ public class Generate {
         inWidget.getLayout().getPinMap().put("content_rb",p9rbIn);
 
         AInput input = new AInput();
-        input.setVar("anchor_passwd");
+        input.setKey("anchor_passwd");
         ActionInfo login = new ActionInfo("anchor_engine:login");
         login.setParam("passwd","%anchor_passwd%");
         input.setOnEnter(login);

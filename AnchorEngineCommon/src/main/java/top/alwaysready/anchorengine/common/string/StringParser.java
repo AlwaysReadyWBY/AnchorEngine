@@ -18,7 +18,7 @@ public class StringParser {
     public static final StringParser STRING = new StringParser(str -> str);
     public static final StringParser CHARACTER = new StringParser(str -> str.charAt(0));
     public static final StringParser INVALID = new StringParser(any -> null);
-    public static final StringParser HEX_INT = new StringParser(str -> Integer.parseInt(str,16));
+    public static final StringParser HEX_INT = new StringParser(str -> Integer.parseUnsignedInt(str,16));
 
     public static Optional<StringParser> ofType(Class<?> type){
         if(type.isEnum()){

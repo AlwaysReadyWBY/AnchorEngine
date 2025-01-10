@@ -14,6 +14,7 @@ public interface JsonPacketTypes {
         String ACTION = toKey("action");
         String PUSH = toKey("push");
         String SET_SCREEN = toKey("set_screen");
+        String ADD_OVERLAY = toKey("add_overlay");
         String CLOSE_SCREEN = toKey("close_screen");
         String CALL_EVENT = toKey("call_event");
     }

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "blackscreen",
+    "ui": "anchor_engine:blackscreen"
+  },
+  {
+    "id": "danmaku",
+    "ui": "anchor_engine:danmaku",
+    "lifeMillis": "%danmaku_time%",
+    "var": {
+      "danmaku_text": "测试弹幕",
+      "danmaku_y": "0",
+      "danmaku_time": "10000"
+    }
+  }
+]

@@ -190,7 +190,7 @@
                 },
                 "focusRequired": "1",
                 "autofill": "测试信息",
-                "var": "anchor_debug",
+                "key": "anchor_debug",
                 "type": "anchor_engine:input",
                 "onEnter": {
                   "id": "anchor_engine:demo",
@@ -308,7 +308,7 @@
                         "type": "anchor_engine:image"
                       },
                       {
-                        "var": "anchor_passwd",
+                        "key": "anchor_passwd",
                         "focusRequired": "0",
                         "obfuscated": "1",
                         "onEnter": {
@@ -455,6 +455,82 @@
         }
       },
       "type": "anchor_engine:group"
+    },
+    "anchor_engine:blackscreen": {
+      "type": "anchor_engine:rect",
+      "fill": "ff000000",
+      "layout": {
+        "pin1": "left_top",
+        "pin2": "right_bottom"
+      }
+    },
+    "anchor_engine:hud": {
+      "type": "anchor_engine:group",
+      "layout": {
+        "pinMap":{
+          "coinLT":{
+            "xGrow":"0.5",
+            "xOffset": "94",
+            "yGrow": "1",
+            "yOffset": "-41"
+          },
+          "coinRB":{
+            "xGrow":"1",
+            "yGrow": "1",
+            "yOffset": "-32"
+          }
+        }
+      },
+      "child": [
+        {
+          "type": "anchor_engine:text",
+          "replaceable": true,
+          "raw": "%vault_eco_balance_formatted%\uD83E\uDE99",
+          "layout":{
+            "pin1": "coinLT",
+            "pin2": "coinRB"
+          }
+        }
+      ]
+    },
+    "anchor_engine:danmaku": {
+      "type": "anchor_engine:group",
+      "layout": {
+        "pinMap":{
+          "bannerLT":{
+            "yGrow": "%danmaku_y%"
+          },
+          "textLT": {
+            "xGrow": "%=-0.3+<overlay_life>*1.3/<danmaku_time>%",
+            "yGrow": "%danmaku_y%",
+            "yOffset": "2"
+          },
+          "bannerRB":{
+            "xGrow": "1",
+            "yGrow": "%danmaku_y%",
+            "yOffset": "12"
+          }
+        }
+      },
+      "child": [
+        {
+          "type": "anchor_engine:rect",
+          "fill": "77000000",
+          "layout": {
+            "pin1": "bannerLT",
+            "pin2": "bannerRB"
+          }
+        },
+        {
+          "type": "anchor_engine:text",
+          "replaceable": true,
+          "raw": "%danmaku_text%",
+          "layout":{
+            "pin1": "textLT",
+            "pin2": "bannerRB"
+          }
+        }
+      ]
     }
   }
 }

@@ -11,6 +11,7 @@ import top.alwaysready.anchorengine.common.net.packet.json.JsonPacket;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.net.packet.json.Push;
+import top.alwaysready.anchorengine.common.string.StringReplacer;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.util.function.Predicate;
 
 public class AControlChannel extends AbstractAChannel<JsonPacket> {
     private final Map<String, Action> screenActionMap = new Hashtable<>();
+    private final StringReplacer replacer = new StringReplacer();
     private UUID playerId;
 
     public AControlChannel(boolean inCharge) {
@@ -127,5 +129,19 @@ public class AControlChannel extends AbstractAChannel<JsonPacket> {
 
     public void removeActions(Predicate<String> removeIf){
         screenActionMap.keySet().removeIf(removeIf);
+    }
+
+    public void registerVar(String key, String value) {
+        replacer.map(key,value);
+    }
+
+    public StringReplacer getReplacer() {
+        return replacer;
+    }
+
+    @Override
+    public void newContext() {
+        super.newContext();
+        getReplacer().clear();
     }
 }

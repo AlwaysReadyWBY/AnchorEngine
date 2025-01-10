@@ -20,6 +20,9 @@ public class Menu {
     @SerializedName("actions")
     private Map<String, Action> actionMap;
 
+    @SerializedName("var")
+    private Map<String,String> varMap;
+
     public void setId(String id) {
         this.id = id;
     }
@@ -41,6 +44,11 @@ public class Menu {
         return actionMap;
     }
 
+    protected Map<String, String> getVarMap(){
+        if(varMap == null) varMap = new ConcurrentHashMap<>();
+        return varMap;
+    }
+
     public List<String> getPerms() {
         if(perms==null) perms = new ArrayList<>();
         return perms;
@@ -52,7 +60,10 @@ public class Menu {
             return;
         }
         AnchorUtils.getService(ScheduleService.class).ifPresent(sch->sch.scheduleAsync(()->{
-            JsonPacketUtils.S2C.setScreen(playerId, getUI(),ch-> getActionMap().forEach(ch::registerAction));
+            JsonPacketUtils.S2C.setScreen(playerId, getUI(),ch-> {
+                getActionMap().forEach(ch::registerAction);
+                getVarMap().forEach(ch::registerVar);
+            });
         }));
     }
 }

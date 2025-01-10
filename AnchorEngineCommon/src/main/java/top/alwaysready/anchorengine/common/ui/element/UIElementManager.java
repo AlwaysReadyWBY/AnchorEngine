@@ -21,6 +21,8 @@ public class UIElementManager implements JsonSerializer<UIElement>, JsonDeserial
         registerType("input", AInput.class);
         registerType("slot", ASlot.class);
         registerType("scroll", AScroll.class);
+        registerType("rect", ARect.class);
+        registerType("ref", AReference.class);
         registerType("button_widget", AButtonWidget.class);
     }
 
@@ -45,14 +47,22 @@ public class UIElementManager implements JsonSerializer<UIElement>, JsonDeserial
 
     @Override
     public UIElement deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        if(json == null || !json.isJsonObject()) return null;
-        try {
-            String key = AnchorUtils.toKey(json.getAsJsonObject().get("type").getAsString());
-            Class<? extends UIElement> type = typeMap.get(key);
-            if(type == null) return null;
-            return context.deserialize(json,type);
-        }catch (RuntimeException e){
-            AnchorUtils.warn("Failed to parse ui element from json "+json,e);
+        if(json == null) return null;
+        if(json.isJsonPrimitive()){
+            AReference ret = new AReference();
+            ret.setKey(json.getAsString());
+            return ret;
+        }else if(json.isJsonObject()) {
+            try {
+                String key = AnchorUtils.toKey(json.getAsJsonObject().get("type").getAsString());
+                Class<? extends UIElement> type = typeMap.get(key);
+                if (type == null) return null;
+                return context.deserialize(json, type);
+            } catch (RuntimeException e) {
+                AnchorUtils.warn("Failed to parse ui element from json " + json, e);
+                return null;
+            }
+        }else {
             return null;
         }
     }

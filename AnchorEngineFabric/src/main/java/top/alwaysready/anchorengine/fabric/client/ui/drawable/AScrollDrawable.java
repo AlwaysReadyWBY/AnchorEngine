@@ -171,7 +171,7 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
             AnchorUtils.getService(ClientChannelHandler.class)
                     .map(ClientChannelHandler::getControlChannel)
                     .map(AbstractAChannel::getContext)
-                    .filter(context -> context.equals(getContext()))
+                    .filter(context -> !context.equals(getContext()))
                     .ifPresent(this::setContext);
         });
     }

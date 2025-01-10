@@ -1,5 +1,6 @@
 package top.alwaysready.anchorengine.common.client.ui;
 
+import top.alwaysready.anchorengine.common.net.packet.json.OverlayInfo;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
@@ -15,4 +16,12 @@ public interface UIRoot {
     void setScreen(UIElement elem);
     void setHud(UIElement elem);
     void closeScreen();
+
+    default void addOverlay(OverlayInfo info){
+        AnchorUtils.getService(UIElementManager.class)
+                .flatMap(man -> man.getElement(AnchorUtils.toKey(info.getUI())))
+                .ifPresent(elem -> addOverlay(info,elem));
+    }
+
+    void addOverlay(OverlayInfo info,UIElement elem);
 }

@@ -7,7 +7,7 @@ import top.alwaysready.anchorengine.common.string.StringReplacer;
 import java.util.Optional;
 
 public class AInput extends UIElement{
-    private String var;
+    private String key;
     private String multiline;
     private String lineHeight;
     private String color;
@@ -16,16 +16,16 @@ public class AInput extends UIElement{
     private String obfuscated;
     private ActionInfo onEnter;
 
-    public void setVar(String var) {
-        this.var = var;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getVar() {
-        return var;
+    public String getKey() {
+        return key;
     }
 
-    public String getVar(StringReplacer replacer){
-        String var = getVar();
+    public String getKey(StringReplacer replacer){
+        String var = getKey();
         if(var == null) return null;
         return replacer.apply(var);
     }

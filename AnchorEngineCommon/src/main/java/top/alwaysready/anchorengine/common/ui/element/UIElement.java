@@ -1,13 +1,19 @@
 package top.alwaysready.anchorengine.common.ui.element;
 
+import com.google.gson.annotations.SerializedName;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinBoard;
 
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Optional;
 
 public class UIElement {
     private PinBoard layout;
     private String count;
     private String id;
+
+    @SerializedName("var")
+    private Map<String,String> varMap;
 
     public PinBoard getLayout() {
         if(layout == null) layout = new PinBoard();
@@ -29,5 +35,10 @@ public class UIElement {
 
     public Optional<String> getId() {
         return Optional.ofNullable(id);
+    }
+
+    public Map<String, String> getVarMap() {
+        if(varMap == null) varMap = new Hashtable<>();
+        return varMap;
     }
 }

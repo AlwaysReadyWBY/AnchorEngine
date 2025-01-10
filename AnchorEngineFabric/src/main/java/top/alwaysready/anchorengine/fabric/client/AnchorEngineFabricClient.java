@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.client.ClientChannelHandler;
 import top.alwaysready.anchorengine.common.client.ClientVarManager;
 import top.alwaysready.anchorengine.common.client.ui.UIRoot;
@@ -16,7 +15,6 @@ import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.ui.element.AGroup;
 import top.alwaysready.anchorengine.common.ui.element.AImage;
 import top.alwaysready.anchorengine.common.ui.element.AInput;
-import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinPoint;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.fabric.client.net.FabricClientChannelHandler;
@@ -119,7 +117,7 @@ public class AnchorEngineFabricClient implements ClientModInitializer {
         group.getLayout().getPinMap().put("inRB", rb);
         AInput input = new AInput();
         input.setAutofill("test");
-        input.setVar("anchor_debug");
+        input.setKey("anchor_debug");
         input.getLayout().setPin1("inLT");
         input.getLayout().setPin2("inRB");
         group.getChildren().add(input);

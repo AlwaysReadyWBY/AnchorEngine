@@ -42,6 +42,16 @@ public interface JsonPacketUtils {
                     });
         }
 
+        static void addOverlay(UUID playerId,OverlayInfo info,Consumer<AControlChannel> init){
+            AnchorUtils.getService(ServerChannelManager.class)
+                    .map(chMan -> chMan.getHandler(playerId))
+                    .map(ServerChannelHandler::getControlChannel)
+                    .ifPresent(channel -> {
+                        init.accept(channel);
+                        channel.send(new JsonPacket(JsonPacketTypes.S2C.ADD_OVERLAY,info));
+                    });
+        }
+
         static void setScreen(UUID playerId, String key){
             setScreen(playerId,key,channel->{});
         }
