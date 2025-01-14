@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import top.alwaysready.anchorengine.common.action.Action;
 import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.spigot.AnchorEngineSpigot;
 import top.alwaysready.readycore.ReadyCore;

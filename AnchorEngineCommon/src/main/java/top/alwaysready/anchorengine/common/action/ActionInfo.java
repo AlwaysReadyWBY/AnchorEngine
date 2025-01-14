@@ -2,7 +2,7 @@ package top.alwaysready.anchorengine.common.action;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -42,7 +42,7 @@ public class ActionInfo {
         return getId() == null;
     }
 
-    protected Map<String, String> getParams() {
+    public Map<String, String> getParams() {
         return params;
     }
 

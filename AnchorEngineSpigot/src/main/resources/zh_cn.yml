@@ -1,5 +1,6 @@
 info:
   format: '&e[锚点引擎]'
+  click-to-copy: '%info.format% &a[点击复制]'
   load: '%info.format% &a加载成功'
   version: '%info.format% &a锚点引擎版本: %0% - %1%  作者:%2%'
   no-perm: '%info.format% &c缺少权限%0%'
@@ -18,6 +19,7 @@ help:
     show: '&e/anchor show <组件名> [玩家] &7- &a向自己/指定玩家展示指定界面'
     close: '&e/anchor close [玩家] &7- &a令自己/指定玩家关闭当前界面'
     push: '&e/anchor push <文件名> [玩家] &7- &a将 push/文件名 指定的文件所定义的界面等信息同步至自己/指定玩家的客户端'
+    item: '&e/anchor item &7- &a将手中的物品导出为json格式'
     reload: '&e/anchor reload &7- &4重载插件'
     debug: '&e/anchor debug &7- &4调试用指令'
 support:

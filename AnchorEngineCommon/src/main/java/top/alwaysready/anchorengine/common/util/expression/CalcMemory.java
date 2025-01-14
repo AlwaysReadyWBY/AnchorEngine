@@ -1,6 +1,6 @@
 package top.alwaysready.anchorengine.common.util.expression;
 
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 
 import java.util.Optional;
 import java.util.Stack;

@@ -1,3 +1,4 @@
 {
-  "rui.custom_screen.title": "A Custom Screen"
+  "anchor_engine.custom_screen.title": "A Custom Screen",
+  "message.anchor_engine.click_to_copy": "[Click to copy]"
 }

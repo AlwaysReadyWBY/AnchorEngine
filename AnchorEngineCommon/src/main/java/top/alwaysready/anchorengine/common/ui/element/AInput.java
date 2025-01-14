@@ -1,8 +1,8 @@
 package top.alwaysready.anchorengine.common.ui.element;
 
 import top.alwaysready.anchorengine.common.action.ActionInfo;
-import top.alwaysready.anchorengine.common.string.StringParser;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringParser;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 
 import java.util.Optional;
 

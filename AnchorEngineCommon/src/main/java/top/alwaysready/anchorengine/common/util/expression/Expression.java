@@ -2,7 +2,7 @@ package top.alwaysready.anchorengine.common.util.expression;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

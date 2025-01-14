@@ -1,73 +1,24 @@
 package top.alwaysready.anchorengine.common.ui.element;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import top.alwaysready.anchorengine.common.AnchorEngine;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.SerializableText;
 
 public class AText extends UIElement{
-    private static final JsonObject EMPTY_TEXT = parseText("");
-
-    public static JsonObject parseText(String text){
-        if(text == null) return EMPTY_TEXT;
-        if(text.startsWith("{")){
-            try {
-                return JsonParser.parseString(text).getAsJsonObject();
-            } catch (JsonParseException e){
-                JsonObject obj = new JsonObject();
-                obj.addProperty("text", text);
-                return obj;
-            }
-        } else {
-            JsonObject obj = new JsonObject();
-            obj.addProperty("text", text);
-            return obj;
-        }
-    }
-
-    private boolean replaceable = false;
-    private String raw;
     private String lineHeight;
     private String color;
-    private JsonObject text;
+    private SerializableText text;
 
-    public boolean isReplaceable() {
-        return replaceable;
-    }
-
-    public void setReplaceable(boolean replaceable) {
-        this.replaceable = replaceable;
-    }
-
-    public void setTextRaw(String raw){
-        this.raw = raw;
-        if(isReplaceable()){
-            text = null;
-        } else {
-            setText(parseText(raw));
-        }
-    }
-
-    public String getRaw() {
-        if(raw == null) raw = AnchorEngine.getInstance().getCompactGson().toJson(getText());
-        return raw;
-    }
-
-    public void setText(JsonObject text) {
+    public void setText(SerializableText text) {
         this.text = text;
-        raw = null;
     }
 
-    public JsonObject getText() {
-        if(text == null) text = parseText(raw);
+    public SerializableText getText() {
         return text;
     }
 
     public JsonObject getText(StringReplacer replacer) {
-        return isReplaceable()?
-                parseText(replacer.apply(getRaw())):
-                getText();
+        return getText().getJson(replacer);
     }
 
     public String getLineHeight() {

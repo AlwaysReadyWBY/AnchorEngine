@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import top.alwaysready.anchorengine.common.action.Action;
 import top.alwaysready.anchorengine.common.action.ActionManager;
 import top.alwaysready.anchorengine.common.service.ServiceManager;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 

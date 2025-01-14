@@ -44,17 +44,27 @@ public class ARectDrawable extends AnchorDrawable<ARect>{
     protected void renderImpl(DrawContext context, RenderBounds parentBounds, int mouseX, int mouseY, float delta) {
         getBounds().ifPresent(bounds -> {
             context.enableScissor((int) bounds.left(), (int) bounds.top(), (int) bounds.right(), (int) bounds.bottom());
-            getBorder().ifPresent(color->context.drawBorder((int) bounds.left(),
+            getBorder().ifPresent(color->drawBorder(context,
+                    (int) bounds.left(),
                     (int) bounds.top(),
                     (int) bounds.width(),
                     (int) bounds.height(),
+                    getZ(),
                     color));
             getFill().ifPresent(color ->context.fill((int) bounds.left(),
                     (int) bounds.top(),
                     (int) bounds.right(),
                     (int) bounds.bottom(),
+                    getZ(),
                     color));
             context.disableScissor();
         });
+    }
+
+    public void drawBorder(DrawContext context,int x, int y, int width, int height, int z,int color) {
+        context.fill(x, y, x + width, y + 1,z, color);
+        context.fill(x, y + height - 1, x + width, y + height,z, color);
+        context.fill(x, y + 1, x + 1, y + height - 1, z,color);
+        context.fill(x + width - 1, y + 1, x + width, y + height - 1,z, color);
     }
 }

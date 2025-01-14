@@ -1,6 +1,6 @@
 package top.alwaysready.anchorengine.common.ui.layout.board;
 
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.util.Hashtable;
@@ -88,22 +88,27 @@ public class ResolvedBoard {
     }
 
     public ResolvedBoard resolvePins(Map<String,PinPoint> pinMap){
-        pinMap.forEach((key,point)-> {
-            double x = getLeft() + getWidth() * point.getXGrow(getReplacer()) + point.getXOffset(getReplacer());
-            double y = getTop() + getHeight() * point.getYGrow(getReplacer()) + point.getYOffset(getReplacer());
-            getPinMap().put(key, new ResolvedPinPoint(x,y));
-        });
+        pinMap.forEach((key,point)-> getPinMap().put(key, getPin(point)));
         return this;
     }
 
-    public Optional<ResolvedPinPoint> getPin(String reference){
-        return Optional.ofNullable(getPinMap().get(getReplacer().apply(reference)));
+    public Optional<ResolvedPinPoint> getPin(String key){
+        return Optional.ofNullable(getPinMap().get(key));
+    }
+
+    public ResolvedPinPoint getPin(PinPoint pin){
+        ResolvedPinPoint ref = pin.getRef().map(getReplacer()::apply).map(getPinMap()::get).orElse(null);
+        double x = getWidth() * pin.getXGrow(getReplacer()) + pin.getXOffset(getReplacer())
+                + (ref == null? getLeft():ref.x());
+        double y = getHeight() * pin.getYGrow(getReplacer()) + pin.getYOffset(getReplacer())
+                + (ref == null? getTop():ref.y());
+        return new ResolvedPinPoint(x,y);
     }
 
     public Optional<ResolvedBoard> resolveChild(PinBoard def){
-        ResolvedPinPoint pin1 = getPin(def.getPin1()).orElse(null);
+        ResolvedPinPoint pin1 = getPin(def.getPin1());
         if(pin1 == null) return Optional.empty();
-        ResolvedPinPoint pin2 = getPin(def.getPin2()).orElse(null);
+        ResolvedPinPoint pin2 = getPin(def.getPin2());
         if(pin2 == null) return Optional.empty();
         return Optional.ofNullable(new ResolvedBoard(pin1, pin2, getReplacer().createChild()).resolvePins(def.getPinMap()));
     }

@@ -2,7 +2,7 @@ package top.alwaysready.anchorengine.common.service;
 
 import top.alwaysready.anchorengine.common.action.ActionManager;
 import top.alwaysready.anchorengine.common.net.AResourceManager;
-import top.alwaysready.anchorengine.common.string.StringParserManager;
+import top.alwaysready.anchorengine.common.serialization.StringParserManager;
 import top.alwaysready.anchorengine.common.ui.element.UIElementManager;
 import top.alwaysready.anchorengine.common.ui.layout.*;
 import top.alwaysready.anchorengine.common.util.KeyedRegistry;

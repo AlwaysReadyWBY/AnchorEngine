@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import top.alwaysready.anchorengine.common.action.ActionInfo;
 import top.alwaysready.anchorengine.common.client.ClientVarManager;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.ui.element.AInput;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
@@ -258,11 +258,13 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
                 if(isObfuscated()) txt = "*".repeat(txt.length());
                 //Render selection
                 if(editBox.hasSelection()) {
-                    context.fill(x+offsetX+selStartX, (int)(selStartY-getLineHeight()), (int) bounds.right(), (int) selStartY,COLOR_SELECTION);
-                    context.fill(x, (int) selStartY, (int) bounds.right(), (int) selEndY,COLOR_SELECTION);
-                    context.fill(x, (int) selEndY,x+offsetX+selEndX, (int) (selEndY+getLineHeight()),COLOR_SELECTION);
+                    context.fill(x+offsetX+selStartX, (int)(selStartY-getLineHeight()), (int) bounds.right(), (int) selStartY,getZ(),COLOR_SELECTION);
+                    context.fill(x, (int) selStartY, (int) bounds.right(), (int) selEndY,getZ(),COLOR_SELECTION);
+                    context.fill(x, (int) selEndY,x+offsetX+selEndX, (int) (selEndY+getLineHeight()),getZ(),COLOR_SELECTION);
                 }
                 //Render text
+                context.getMatrices().push();
+                context.getMatrices().translate(0,0,getZ());
                 for (EditBox.Substring line : editBox.getLines()) {
                     if (y >= minY) {
                         context.drawTextWithShadow(client.textRenderer,
@@ -274,24 +276,28 @@ public class AInputDrawable extends AnchorDrawable<AInput> {
                     y += getLineHeight();
                     if (y > bounds.bottom()) break;
                 }
+                context.getMatrices().pop();
                 //Render cursor
                 if(isEditable() && getTotalDelta() % 10 < 5) {
-                    context.fill(x+cursorX, cursorY + 1, x+cursorX + 1, (int) (cursorY + getLineHeight() - 1), getColor());
+                    context.fill(x+cursorX, cursorY + 1, x+cursorX + 1, (int) (cursorY + getLineHeight() - 1), getZ(),getColor());
                 }
             } else if(y>=minY) {
                 //Render selection
                 if(editBox.hasSelection()) {
-                    context.fill(x+offsetX+selStartX, (int) y,x+offsetX+selEndX, (int) (y+getLineHeight()),COLOR_SELECTION);
+                    context.fill(x+offsetX+selStartX, (int) y,x+offsetX+selEndX, (int) (y+getLineHeight()),getZ(),COLOR_SELECTION);
                 }
                 //Render text
+                context.getMatrices().push();
+                context.getMatrices().translate(0,0,getZ());
                 context.drawTextWithShadow(client.textRenderer,
                         isObfuscated()? "*".repeat(cursorLine.length()):cursorLine,
                         x+offsetX,
                         (int) y,
                         getColor());
+                context.getMatrices().pop();
                 //Render cursor
                 if(isEditable() && getTotalDelta() % 10 < 5) {
-                    context.fill(x+cursorX, (int) (y + 1), x+cursorX + 1, (int) (y + getLineHeight() - 1), getColor());
+                    context.fill(x+cursorX, (int) (y + 1), x+cursorX + 1, (int) (y + getLineHeight() - 1),getZ(),getColor());
                 }
             }
             context.disableScissor();

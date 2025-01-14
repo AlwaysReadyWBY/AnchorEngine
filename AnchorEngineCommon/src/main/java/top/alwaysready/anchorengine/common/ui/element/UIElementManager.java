@@ -24,6 +24,7 @@ public class UIElementManager implements JsonSerializer<UIElement>, JsonDeserial
         registerType("rect", ARect.class);
         registerType("ref", AReference.class);
         registerType("button_widget", AButtonWidget.class);
+        registerType("item", AItem.class);
     }
 
     public void registerElement(String key,UIElement elem){

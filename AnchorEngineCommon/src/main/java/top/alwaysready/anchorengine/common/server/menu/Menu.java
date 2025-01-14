@@ -2,15 +2,14 @@ package top.alwaysready.anchorengine.common.server.menu;
 
 import com.google.gson.annotations.SerializedName;
 import top.alwaysready.anchorengine.common.action.Action;
+import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 public class Menu {
     @SerializedName("requiredPermissions")
@@ -54,7 +53,7 @@ public class Menu {
         return perms;
     }
 
-    public void open(UUID playerId){
+    public void open(UUID playerId, Consumer<AControlChannel> channelOp){
         if(playerId == null){
             AnchorUtils.info("Got null uuid, something is wrong!");
             return;
@@ -63,7 +62,11 @@ public class Menu {
             JsonPacketUtils.S2C.setScreen(playerId, getUI(),ch-> {
                 getActionMap().forEach(ch::registerAction);
                 getVarMap().forEach(ch::registerVar);
+                channelOp.accept(ch);
             });
         }));
+    }
+    public void open(UUID playerId){
+        open(playerId,ch->{});
     }
 }

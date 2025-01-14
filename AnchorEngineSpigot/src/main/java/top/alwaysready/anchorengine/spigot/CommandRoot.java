@@ -1,26 +1,28 @@
 package top.alwaysready.anchorengine.spigot;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.server.ServerChannelHandler;
 import top.alwaysready.anchorengine.common.server.ServerChannelManager;
 import top.alwaysready.anchorengine.common.service.FileService;
-import top.alwaysready.anchorengine.common.string.StringParser;
+import top.alwaysready.anchorengine.common.serialization.StringParser;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
-import top.alwaysready.anchorengine.spigot.config.AnchorEngineConfig;
-import top.alwaysready.anchorengine.spigot.util.SpigotPlayerReplacer;
+import top.alwaysready.anchorengine.spigot.api.AnchorAPI;
+import top.alwaysready.anchorengine.spigot.reflection.ReflectionUtils;
 import top.alwaysready.readycore.ReadyCore;
 import top.alwaysready.readycore.command.ReadyCommandTree;
 import top.alwaysready.readycore.command.SimpleCommand;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Collections;
 
 public class CommandRoot extends ReadyCommandTree {
     public CommandRoot() {
@@ -81,12 +83,8 @@ public class CommandRoot extends ReadyCommandTree {
                         return;
                     }
                 }
-                this.<AnchorEngineConfig>getConfig().getMenu(key).ifPresentOrElse(
-                        menu -> {
-                            if(!menu.getPerms().stream().allMatch(perm -> checkPerm(sender,perm))) return;
-                            menu.open(player.getUniqueId());
-                        },
-                        ()->getConfig().info(sender,"%info.menu-not-found%",key));
+                AnchorUtils.getService(AnchorAPI.class).ifPresent(api ->
+                        api.sendMenu(player,key,ch->{}));
             }
         },"menu");
         addChild(new SimpleCommand("%help.command.overlay%") {
@@ -111,12 +109,8 @@ public class CommandRoot extends ReadyCommandTree {
                         return;
                     }
                 }
-                this.<AnchorEngineConfig>getConfig().getOverlay(key).ifPresentOrElse(
-                        overlay -> {
-//                            if(!overlay.getPerms().stream().allMatch(perm -> checkPerm(sender,perm))) return;
-                            overlay.show(player.getUniqueId(),new SpigotPlayerReplacer(player));
-                        },
-                        ()->getConfig().info(sender,"%info.overlay-not-found%",key));
+                AnchorUtils.getService(AnchorAPI.class).ifPresent(api ->
+                        api.sendOverlay(Collections.singleton(player),null,key, map->{}));
             }
         },"overlay");
         addChild(new SimpleCommand("%help.command.danmaku%") {
@@ -132,17 +126,8 @@ public class CommandRoot extends ReadyCommandTree {
                 String text = ((sender instanceof Player player)? player.getDisplayName()+": ":"")
                         +(index>=args.length? "":String.join(" ", Arrays.copyOfRange(args,index,args.length)));
                 double y = Math.random()*0.6;
-                this.<AnchorEngineConfig>getConfig().getOverlay("danmaku").ifPresentOrElse(
-                        overlay -> {
-                            Map<String,String> varMap = new Hashtable<>();
-                            varMap.put("danmaku_text",text);
-                            varMap.put("danmaku_y",String.valueOf(y));
-                            varMap.put("danmaku_time",String.valueOf(millis));
-                            Bukkit.getOnlinePlayers().forEach(player ->{
-                                overlay.show(player.getUniqueId(),new SpigotPlayerReplacer(player), "danmaku-"+UUID.randomUUID(),varMap);
-                            });
-                        },
-                        ()->getConfig().info(sender,"%info.overlay-not-found%","danmaku"));
+                AnchorUtils.getService(AnchorAPI.class).ifPresent(api ->
+                        api.sendDanmaku(Bukkit.getOnlinePlayers(),text,y,millis));
             }
         },"danmaku");
         addChild(new SimpleCommand("%help.command.show%") {
@@ -201,6 +186,21 @@ public class CommandRoot extends ReadyCommandTree {
                 });
             }
         },"version");
+        addChild(new SimpleCommand("%help.command.item%") {
+            @Override
+            public void execute(CommandSender sender, String[] args, int index) {
+                if(!checkPerm(sender,"anchor.admin")) return;
+                if(!checkPlayer(sender)) return;
+                AnchorUtils.getService(ReflectionUtils.class)
+                        .map(ReflectionUtils::getSerializer)
+                        .flatMap(serializer -> serializer.encodeItem(((Player)sender).getInventory().getItemInMainHand()))
+                        .map(AnchorEngine.getInstance().getConfigGson()::toJson)
+                        .ifPresent(json -> getConfig().sendActionText((Player)sender,
+                                new HoverEvent(HoverEvent.Action.SHOW_TEXT,TextComponent.fromLegacyText(json)),
+                                new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,json),
+                                "%info.click-to-copy%"));
+            }
+        },"item");
         addChild(new SimpleCommand("%help.command.debug%") {
             @Override
             public void execute(CommandSender sender, String[] args, int index) {

@@ -1,3 +1,4 @@
 {
-  "rui.custom_screen.title": "一个自定义屏幕"
+  "anchor_engine.custom_screen.title": "一个自定义屏幕",
+  "message.anchor_engine.click_to_copy": "[点击复制]"
 }

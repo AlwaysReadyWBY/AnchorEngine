@@ -18,35 +18,35 @@ commands:
 permissions:
   anchor:
     children:
-      admin:
+      anchor.admin:
         default: op
-      push:
+      anchor.push:
         default: op
-      show:
+      anchor.show:
         children:
-          base:
+          anchor.show.base:
             default: op
-          others:
+          anchor.show.others:
             default: op
-      close:
+      anchor.close:
         children:
-          base:
+          anchor.close.base:
             default: op
-          others:
+          anchor.close.others:
             default: op
-      menu:
+      anchor.menu:
         children:
-          base:
+          anchor.menu.base:
             default: true
-          others:
+          anchor.menu.others:
             default: op
-      overlay:
+      anchor.overlay:
         children:
-          base:
-            default: false
-          others:
+          anchor.overlay.base:
             default: op
-      danmaku:
+          anchor.overlay.others:
+            default: op
+      anchor.danmaku:
         default: op
-      version:
+      anchor.version:
         default: true

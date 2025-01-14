@@ -9,7 +9,7 @@ import top.alwaysready.anchorengine.common.net.channel.AControlChannel;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.server.ServerChannelHandler;
 import top.alwaysready.anchorengine.common.server.ServerChannelManager;
-import top.alwaysready.anchorengine.common.string.StringParser;
+import top.alwaysready.anchorengine.common.serialization.StringParser;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.spigot.support.papi.AnchorExpansion;
 import top.alwaysready.readycore.ReadyCore;

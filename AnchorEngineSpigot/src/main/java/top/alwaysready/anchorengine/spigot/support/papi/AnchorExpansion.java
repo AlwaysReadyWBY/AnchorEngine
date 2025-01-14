@@ -2,7 +2,6 @@ package top.alwaysready.anchorengine.spigot.support.papi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
 
 import java.util.Map;
 import java.util.WeakHashMap;

@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.alwaysready.anchorengine.common.AnchorEngine;
 import top.alwaysready.anchorengine.common.action.ActionManager;
 import top.alwaysready.anchorengine.common.server.ServerChannelManager;
 import top.alwaysready.anchorengine.common.service.FileService;
@@ -14,6 +13,7 @@ import top.alwaysready.anchorengine.common.service.LogService;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 import top.alwaysready.anchorengine.spigot.action.*;
+import top.alwaysready.anchorengine.spigot.api.AnchorAPI;
 import top.alwaysready.anchorengine.spigot.config.AnchorEngineConfig;
 import top.alwaysready.anchorengine.spigot.listener.PlayerListener;
 import top.alwaysready.anchorengine.spigot.net.SpigotChannelManager;
@@ -21,6 +21,7 @@ import top.alwaysready.anchorengine.spigot.service.SpigotLogService;
 import top.alwaysready.anchorengine.spigot.service.SpigotScheduleService;
 import top.alwaysready.anchorengine.spigot.support.betonquest.BQSupport;
 import top.alwaysready.anchorengine.spigot.support.papi.AnchorExpansion;
+import top.alwaysready.anchorengine.spigot.reflection.ReflectionUtils;
 import top.alwaysready.anchorengine.spigot.util.SpigotPlayerReplacer;
 import top.alwaysready.readycore.ReadyCore;
 
@@ -29,13 +30,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.Optional;
 
 public class AnchorEngineSpigot extends JavaPlugin {
 
     public static final int CONFIG_VERSION = 1;
 
     private CommandRoot cmdRoot;
+    private AnchorAPI api;
     private Map<Player, SpigotPlayerReplacer> playerReplacerMap;
 
     @Override
@@ -46,6 +47,7 @@ public class AnchorEngineSpigot extends JavaPlugin {
         AnchorUtils.registerService(ScheduleService.class,new SpigotScheduleService(this));
         Path dataFolder = getDataFolder().toPath();
         AnchorUtils.registerService(FileService.class, path -> dataFolder.resolve(path).toFile());
+        AnchorUtils.registerService(ReflectionUtils.class, new ReflectionUtils(getServer()));
         AnchorUtils.registerService(AnchorEngineConfig.class,ReadyCore.getInstance().getConfig());
         AnchorExpansion expansion = new AnchorExpansion();
         expansion.register();
@@ -64,6 +66,9 @@ public class AnchorEngineSpigot extends JavaPlugin {
             anchorEngineConfig.loadMenu();
             anchorEngineConfig.loadOverlay();
         });
+
+        api = new AnchorAPI() {};
+        AnchorUtils.registerService(AnchorAPI.class,api);
     }
 
     private void registerActions(){

@@ -312,9 +312,9 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
             if (barStart < contentBounds.left()) {
                 barStart = (int)contentBounds.left();
             }
-            context.fill((int)contentBounds.left(),(int)contentBounds.bottom(),(int)contentBounds.right(),(int)bounds.bottom(),0x77000000);
-            context.fill(barStart, (int)contentBounds.bottom(), barStart + barLength, (int)bounds.bottom(), 0xFF808080);
-            context.fill(barStart, (int)contentBounds.bottom(), barStart + barLength - 1, (int)bounds.bottom(), 0xFFC0C0C0);
+            context.fill((int)contentBounds.left(),(int)contentBounds.bottom(),(int)contentBounds.right(),(int)bounds.bottom(),getZ(),0x77000000);
+            context.fill(barStart, (int)contentBounds.bottom(), barStart + barLength, (int)bounds.bottom(), getZ(),0xFF808080);
+            context.fill(barStart, (int)contentBounds.bottom(), barStart + barLength - 1, (int)bounds.bottom(), getZ(),0xFFC0C0C0);
         }
         //Vertical bar
         if (maxScrY > 0) {
@@ -324,9 +324,9 @@ public class AScrollDrawable extends AnchorDrawable<AScroll> {
             if (barStart < contentBounds.top()) {
                 barStart = (int)contentBounds.top();
             }
-            context.fill((int)contentBounds.right(),(int)contentBounds.top(),(int)bounds.right(),(int)contentBounds.bottom(),0x77000000);
-            context.fill((int)contentBounds.right(), barStart, (int)bounds.right(), barStart + barLength, 0xFF808080);
-            context.fill((int)contentBounds.right(), barStart, (int)bounds.right() - 1, barStart + barLength - 1, 0xFFC0C0C0);
+            context.fill((int)contentBounds.right(),(int)contentBounds.top(),(int)bounds.right(),(int)contentBounds.bottom(),getZ(),0x77000000);
+            context.fill((int)contentBounds.right(), barStart, (int)bounds.right(), barStart + barLength, getZ(),0xFF808080);
+            context.fill((int)contentBounds.right(), barStart, (int)bounds.right() - 1, barStart + barLength - 1, getZ(),0xFFC0C0C0);
         }
         RenderSystem.disableBlend();
     }

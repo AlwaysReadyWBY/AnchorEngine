@@ -2,7 +2,7 @@ package top.alwaysready.anchorengine.common.ui.element;
 
 import top.alwaysready.anchorengine.common.net.AResourceLocation;
 import top.alwaysready.anchorengine.common.net.AResourceManager;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.ui.layout.board.PinBoard;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 

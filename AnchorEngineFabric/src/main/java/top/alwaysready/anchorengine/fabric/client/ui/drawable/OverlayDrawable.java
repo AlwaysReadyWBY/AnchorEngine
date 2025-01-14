@@ -2,9 +2,8 @@ package top.alwaysready.anchorengine.fabric.client.ui.drawable;
 
 import net.minecraft.client.gui.DrawContext;
 import top.alwaysready.anchorengine.common.net.packet.json.OverlayInfo;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
-import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 public final class OverlayDrawable {
     private final AnchorDrawable<?> drawable;

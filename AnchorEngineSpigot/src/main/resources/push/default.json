@@ -6,7 +6,10 @@
           "url": "%anchor_bq_portrait_left%",
           "fillMode": "SCALE",
           "layout": {
-            "pin2": "portrait_left_rb",
+            "pin2": {
+              "xGrow": "0.25",
+              "yGrow": "0.7"
+            },
             "hAlign": "0",
             "vAlign": "1"
           },
@@ -16,10 +19,41 @@
           "url": "%anchor_bq_portrait_right%",
           "fillMode": "SCALE",
           "layout": {
-            "pin1": "portrait_right_lb",
+            "pin1": {
+              "xGrow": "0.75",
+              "yGrow": "0.7"
+            },
             "pin2": "right_top",
-            "hAlign": "0",
+            "hAlign": "1",
             "vAlign": "1"
+          },
+          "type": "anchor_engine:image"
+        },
+        {
+          "url": "%anchor_bq_portrait_background%",
+          "fillMode": "STRETCH",
+          "layout": {
+            "pin1": {
+              "yGrow": "0.7"
+            },
+            "pin2": "right_top"
+          },
+          "type": "anchor_engine:image"
+        },
+        {
+          "url": "%anchor_bq_portrait_inspect%",
+          "fillMode": "SCALE",
+          "layout": {
+            "pin1": {
+              "xGrow": "0.25",
+              "yGrow": "0.175"
+            },
+            "pin2": {
+              "xGrow": "0.75",
+              "yGrow": "0.525"
+            },
+            "hAlign": "0.5",
+            "vAlign": "0.5"
           },
           "type": "anchor_engine:image"
         },
@@ -41,7 +75,10 @@
           },
           "fillMode": "SCALE_9",
           "layout": {
-            "pin1": "box_bg_lt",
+            "pin1": {
+              "yOffset": "-32",
+              "yGrow": "0.7"
+            },
             "pin2": "right_bottom",
             "pinMap": {
               "9p_lt": {
@@ -59,11 +96,17 @@
           "type": "anchor_engine:image"
         },
         {
-          "replaceable": true,
-          "raw": "%anchor_bq_npc_name%",
+          "text": "%anchor_bq_npc_name%",
           "layout": {
-            "pin1": "box_lt",
-            "pin2": "name_rt",
+            "pin1": {
+              "yOffset": "-8",
+              "yGrow": "0.7"
+            },
+            "pin2": {
+              "yOffset": "-32",
+              "xGrow": "0.25",
+              "yGrow": "0.7"
+            },
             "hAlign": "0.5",
             "vAlign": "0.5"
           },
@@ -73,8 +116,7 @@
           "child": {
             "child": [
               {
-                "replaceable": true,
-                "raw": "%anchor_bq_npc_text%",
+                "text": "%anchor_bq_npc_text%",
                 "layout": {
                   "pin2": "right_top",
                   "vWrap": "1"
@@ -83,8 +125,7 @@
               },
               {
                 "text": {
-                  "replaceable": true,
-                  "raw": "%anchor_bq_option_{index_option}%",
+                  "text": "%anchor_bq_option_{index_option}%",
                   "layout": {
                     "hAlign": "0.5",
                     "vAlign": "0.5"
@@ -92,7 +133,7 @@
                 },
                 "button": {
                   "onClick": {
-                    "id":"betonquest:option",
+                    "id": "betonquest:option",
                     "index": "%index_option%"
                   }
                 },
@@ -118,72 +159,54 @@
             "type": "anchor_engine:group"
           },
           "layout": {
-            "pin1": "scroll_lt",
-            "pin2": "scroll_rb"
+            "pin1": {
+              "xOffset": "8",
+              "yGrow": "0.7"
+            },
+            "pin2": {
+              "xOffset": "-8",
+              "yOffset": "-8",
+              "xGrow": "1",
+              "yGrow": "1"
+            }
           },
           "type": "anchor_engine:scroll"
         }
       ],
-      "layout": {
-        "pinMap": {
-          "name_rt": {
-            "yOffset": "-32",
-            "xGrow": "0.25",
-            "yGrow": "0.6"
-          },
-          "portrait_left_rb": {
-            "xGrow": "0.25",
-            "yGrow": "0.6"
-          },
-          "box_bg_lt": {
-            "yOffset": "-32",
-            "yGrow": "0.6"
-          },
-          "scroll_rb": {
-            "xOffset": "-8",
-            "yOffset": "-8",
-            "xGrow": "1",
-            "yGrow": "1"
-          },
-          "box_lt": {
-            "yOffset": "-8",
-            "yGrow": "0.6"
-          },
-          "portrait_right_lb": {
-            "xGrow": "0.75",
-            "yGrow": "0.6"
-          },
-          "scroll_lt": {
-            "xOffset": "8",
-            "yGrow": "0.6"
-          }
-        }
-      },
       "type": "anchor_engine:group"
     },
     "anchor_engine:demo_menu": {
       "type": "anchor_engine:group",
-      "layout": {
-        "pinMap": {
-          "scroll_lt": {
-            "xGrow": "0.3",
-            "yGrow": "0.2"
-          },
-          "scroll_rb": {
-            "xGrow": "0.7",
-            "yGrow": "0.8"
-          }
-        }
-      },
       "child": [
         {
           "type": "anchor_engine:scroll",
           "layout": {
-            "pin1": "scroll_lt",
-            "pin2": "scroll_rb"
+            "pin1": {
+              "xGrow": "0.3",
+              "yGrow": "0.2"
+            },
+            "pin2": {
+              "xGrow": "0.7",
+              "yGrow": "0.8"
+            }
           },
           "child": {
             "child": [
+              {
+                "type":"anchor_engine:item",
+                "item": {
+                  "id": "minecraft:cooked_beef",
+                  "Count": 26
+                },
+                "layout": {
+                  "pin2": {
+                    "xGrow": 1,
+                    "yOffset": 32
+                  },
+                  "hAlign": "0.5",
+                  "vAlign": "0.5"
+                }
+              },
               {
                 "layout": {
                   "pin2": "btn_rb"
@@ -199,7 +222,7 @@
               },
               {
                 "text": {
-                  "raw": "示例",
+                  "text": "示例",
                   "layout": {
                     "hAlign": "0.5",
                     "vAlign": "0.5"
@@ -218,7 +241,7 @@
               },
               {
                 "text": {
-                  "raw": "关闭",
+                  "text": "关闭",
                   "layout": {
                     "hAlign": "0.5",
                     "vAlign": "0.5"
@@ -276,8 +299,7 @@
               "child": {
                 "child": [
                   {
-                    "replaceable": true,
-                    "raw": "%server_name%",
+                    "text": "%server_name%",
                     "layout": {
                       "pin1": "fix_lt",
                       "pin2": "fix_rb",
@@ -316,33 +338,28 @@
                           "id": "anchor_engine:login"
                         },
                         "layout": {
-                          "pin1": "content_lt",
-                          "pin2": "content_rb"
+                          "pin1": {
+                            "xOffset": "2",
+                            "yOffset": "2"
+                          },
+                          "pin2": {
+                            "xOffset": "-2",
+                            "yOffset": "-2",
+                            "xGrow": "1",
+                            "yGrow": "1"
+                          }
                         },
                         "type": "anchor_engine:input"
                       }
                     ],
                     "layout": {
                       "pin1": "fix_lt",
-                      "pin2": "fix_rb",
-                      "pinMap": {
-                        "content_rb": {
-                          "xOffset": "-2",
-                          "yOffset": "-2",
-                          "xGrow": "1",
-                          "yGrow": "1"
-                        },
-                        "content_lt": {
-                          "xOffset": "2",
-                          "yOffset": "2"
-                        }
-                      }
+                      "pin2": "fix_rb"
                     },
                     "type": "anchor_engine:group"
                   },
                   {
                     "text": {
-                      "replaceable": false,
                       "text": {
                         "text": "登录"
                       },
@@ -366,7 +383,6 @@
                   },
                   {
                     "text": {
-                      "replaceable": false,
                       "text": {
                         "text": "注册"
                       },
@@ -391,7 +407,10 @@
                 ],
                 "layoutMode": "anchor_engine:linear_vertical",
                 "layout": {
-                  "pin2": "item_rb",
+                  "pin2": {
+                    "yOffset": "20",
+                    "xGrow": "1"
+                  },
                   "pinMap": {
                     "fix_rb": {
                       "yOffset": "18",
@@ -407,127 +426,93 @@
                 "type": "anchor_engine:group"
               },
               "layout": {
-                "pin1": "content_lt",
-                "pin2": "content_rb",
-                "pinMap": {
-                  "item_rb": {
-                    "yOffset": "20",
-                    "xGrow": "1"
-                  }
+                "pin1": {
+                  "xOffset": "6",
+                  "yOffset": "6"
+                },
+                "pin2": {
+                  "xOffset": "-6",
+                  "yOffset": "-6",
+                  "xGrow": "1",
+                  "yGrow": "1"
                 }
               },
               "type": "anchor_engine:scroll"
             }
           ],
           "layout": {
-            "pin1": "boxLT",
-            "pin2": "boxRB",
-            "pinMap": {
-              "content_rb": {
-                "xOffset": "-6",
-                "yOffset": "-6",
-                "xGrow": "1",
-                "yGrow": "1"
-              },
-              "wrapRB": {
-                "yOffset": "12",
-                "xGrow": "1"
-              },
-              "content_lt": {
-                "xOffset": "6",
-                "yOffset": "6"
-              }
+            "pin1": {
+              "xGrow": "0.25",
+              "yGrow": "0.25"
+            },
+            "pin2": {
+              "xGrow": "0.75",
+              "yGrow": "0.75"
             }
           },
           "type": "anchor_engine:group"
         }
       ],
-      "layout": {
-        "pinMap": {
-          "boxRB": {
-            "xGrow": "0.75",
-            "yGrow": "0.75"
-          },
-          "boxLT": {
-            "xGrow": "0.25",
-            "yGrow": "0.25"
-          }
-        }
-      },
       "type": "anchor_engine:group"
-    },
-    "anchor_engine:blackscreen": {
-      "type": "anchor_engine:rect",
-      "fill": "ff000000",
-      "layout": {
-        "pin1": "left_top",
-        "pin2": "right_bottom"
-      }
     },
     "anchor_engine:hud": {
       "type": "anchor_engine:group",
-      "layout": {
-        "pinMap":{
-          "coinLT":{
-            "xGrow":"0.5",
-            "xOffset": "94",
-            "yGrow": "1",
-            "yOffset": "-41"
-          },
-          "coinRB":{
-            "xGrow":"1",
-            "yGrow": "1",
-            "yOffset": "-32"
-          }
-        }
-      },
       "child": [
         {
           "type": "anchor_engine:text",
-          "replaceable": true,
-          "raw": "%vault_eco_balance_formatted%\uD83E\uDE99",
+          "text": "%vault_eco_formatted%🪙",
           "layout":{
-            "pin1": "coinLT",
-            "pin2": "coinRB"
+            "pin1": {
+              "xGrow":"0.5",
+              "xOffset": "94",
+              "yGrow": "1",
+              "yOffset": "-41"
+            },
+            "pin2": {
+              "xGrow":"1",
+              "yGrow": "1",
+              "yOffset": "-32"
+            }
           }
         }
       ]
     },
+    "anchor_engine:blackscreen": {
+      "type": "anchor_engine:rect",
+      "fill": "ff000000",
+      "z": 1000
+    },
     "anchor_engine:danmaku": {
       "type": "anchor_engine:group",
-      "layout": {
-        "pinMap":{
-          "bannerLT":{
-            "yGrow": "%danmaku_y%"
-          },
-          "textLT": {
-            "xGrow": "%=-0.3+<overlay_life>*1.3/<danmaku_time>%",
-            "yGrow": "%danmaku_y%",
-            "yOffset": "2"
-          },
-          "bannerRB":{
-            "xGrow": "1",
-            "yGrow": "%danmaku_y%",
-            "yOffset": "12"
-          }
-        }
-      },
       "child": [
         {
           "type": "anchor_engine:rect",
           "fill": "77000000",
           "layout": {
-            "pin1": "bannerLT",
-            "pin2": "bannerRB"
+            "pin1": {
+              "yGrow": "%danmaku_y%"
+            },
+            "pin2": {
+              "xGrow": "1",
+              "yGrow": "%danmaku_y%",
+              "yOffset": "12"
+            }
           }
         },
         {
           "type": "anchor_engine:text",
-          "replaceable": true,
-          "raw": "%danmaku_text%",
+          "text": "%danmaku_text%",
           "layout":{
-            "pin1": "textLT",
-            "pin2": "bannerRB"
+            "pin1": {
+              "xGrow": "%=-0.3+<overlay_life>*1.3/<danmaku_time>%",
+              "yGrow": "%danmaku_y%",
+              "yOffset": "2"
+            },
+            "pin2": {
+              "xGrow": "2.3",
+              "yGrow":"%danmaku_y%",
+              "yOffset": "12"
+            }
           }
         }
       ]

@@ -3,7 +3,7 @@ package top.alwaysready.anchorengine.common.client;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacket;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
 import top.alwaysready.anchorengine.common.net.packet.json.PacketQuery;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

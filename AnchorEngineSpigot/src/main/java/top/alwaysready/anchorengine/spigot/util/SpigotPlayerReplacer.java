@@ -3,7 +3,7 @@ package top.alwaysready.anchorengine.spigot.util;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.entity.Player;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 
 import java.util.Optional;
 

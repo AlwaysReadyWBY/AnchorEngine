@@ -97,6 +97,8 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
                     RenderSystem.enableBlend();
                     RenderSystem.enableDepthTest();
                     int textureY = 46 + 20*(isActive()? hovered? 2:1 :0);
+                    context.getMatrices().push();
+                    context.getMatrices().translate(0,0,getZ());
                     context.drawNineSlicedTexture(ClickableWidget.WIDGETS_TEXTURE,
                             (int) bounds.left(),
                             (int) bounds.top(),
@@ -108,6 +110,7 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
                             20,
                             0,
                             textureY);
+                    context.getMatrices().pop();
                     RenderSystem.disableBlend();
                     RenderSystem.disableDepthTest();
                 }
@@ -120,6 +123,7 @@ public class AButtonDrawable extends AnchorDrawable<AButton> {
                             (int) bounds.top(),
                             (int) bounds.right(),
                             (int) bounds.bottom(),
+                            getZ(),
                             hovered ? 0x77ffffff : 0x77000000);
                     RenderSystem.disableBlend();
                 }

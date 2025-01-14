@@ -10,8 +10,8 @@ import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
-import top.alwaysready.anchorengine.fabric.client.ui.drawable.AnchorDrawable;
 import top.alwaysready.anchorengine.fabric.client.ui.drawable.ADrawableManager;
+import top.alwaysready.anchorengine.fabric.client.ui.drawable.AnchorDrawable;
 
 @Environment(EnvType.CLIENT)
 public class AnchorScreen extends Screen {
@@ -38,7 +38,6 @@ public class AnchorScreen extends Screen {
     public void setAnchorDrawable(AnchorDrawable<?> anchorDrawable) {
         this.anchorDrawable = anchorDrawable;
         clearChildren();
-        addDrawableChild(anchorDrawable);
     }
 
     public AnchorDrawable<?> getAnchorDrawable() {
@@ -60,6 +59,13 @@ public class AnchorScreen extends Screen {
     @Override
     protected void init() {
         update();
+    }
+
+    @Override
+    protected void clearChildren() {
+        super.clearChildren();
+        AnchorDrawable<?> anchorDrawable = getAnchorDrawable();
+        if(anchorDrawable!=null) addDrawableChild(anchorDrawable);
     }
 
     @Override

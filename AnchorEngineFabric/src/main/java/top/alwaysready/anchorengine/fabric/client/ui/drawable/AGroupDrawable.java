@@ -3,7 +3,6 @@ package top.alwaysready.anchorengine.fabric.client.ui.drawable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import top.alwaysready.anchorengine.common.string.StringParser;
 import top.alwaysready.anchorengine.common.ui.element.AGroup;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.layout.BoardLayout;
@@ -15,6 +14,7 @@ import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
@@ -39,9 +39,11 @@ public class AGroupDrawable extends AnchorDrawable<AGroup> {
             double right = region.getLeft();
             double bottom = region.getTop();
             int totalCount = getElement().getChildren().stream()
+                    .filter(Objects::nonNull)
                     .map(UIElement::getCount)
                     .map(region.getReplacer()::getAsInt)
                     .flatMap(Optional::stream)
+                    .filter(Objects::nonNull)
                     .mapToInt(i->i)
                     .sum();
             if(totalCount == getChildren().size()){

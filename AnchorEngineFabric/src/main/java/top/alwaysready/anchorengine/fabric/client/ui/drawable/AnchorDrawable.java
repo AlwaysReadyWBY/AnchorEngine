@@ -2,14 +2,17 @@ package top.alwaysready.anchorengine.fabric.client.ui.drawable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.text.Text;
 import top.alwaysready.anchorengine.common.ui.element.UIElement;
 import top.alwaysready.anchorengine.common.ui.layout.board.RenderBounds;
 import top.alwaysready.anchorengine.common.ui.layout.board.ResolvedBoard;
+import top.alwaysready.anchorengine.fabric.util.TextUtils;
 
 import java.util.Optional;
 
@@ -30,6 +33,8 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
     private boolean focused = false;
     private int index = 0;
     private float totalDelta = 0;
+    private Text tooltip = null;
+    private int z =0;
 
     private final Object renderLock = new Object();
     private boolean updating;
@@ -115,6 +120,14 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
         return alignOffsetY;
     }
 
+    public void setTooltip(Text tooltip) {
+        this.tooltip = tooltip;
+    }
+
+    public Optional<Text> getTooltip() {
+        return Optional.ofNullable(tooltip);
+    }
+
     public synchronized void setRegion(ResolvedBoard region) {
         this.region = region;
     }
@@ -140,6 +153,10 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
                     .orElse(false));
             setHAlign(region.getReplacer().getAsDouble(getElement().getLayout().getHAlign()).orElse(0d));
             setVAlign(region.getReplacer().getAsDouble(getElement().getLayout().getVAlign()).orElse(0d));
+            getElement().getTooltip()
+                    .map(tooltip -> TextUtils.deserialize(tooltip,region.getReplacer()))
+                    .ifPresent(this::setTooltip);
+            setZ(region.getReplacer().getAsInt(getElement().getZ()).orElse(0));
         });
     }
 
@@ -207,6 +224,12 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
                     .map(parentBounds::intersect)
                     .orElse(null);
             renderImpl(context, parentBounds, mouseX, mouseY, delta);
+            if(isMouseOver(mouseX,mouseY)){
+                context.enableScissor(0,0,context.getScaledWindowWidth(),context.getScaledWindowHeight());
+                getTooltip().ifPresent(tooltip->
+                        context.drawTooltip(MinecraftClient.getInstance().textRenderer,tooltip,mouseX,mouseY));
+                context.disableScissor();
+            }
         }
     }
 
@@ -237,5 +260,13 @@ public abstract class AnchorDrawable<T extends UIElement> implements Drawable, E
 
     public float getTotalDelta() {
         return totalDelta;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
+    }
+
+    public int getZ() {
+        return z;
     }
 }

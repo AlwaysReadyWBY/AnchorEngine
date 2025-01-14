@@ -79,6 +79,8 @@ public class AImageDrawable extends AnchorDrawable<AImage> {
                     getBounds().ifPresent(bounds ->{
                         RenderSystem.enableBlend();
                         context.enableScissor((int) bounds.left(), (int) bounds.top(), (int) bounds.right(), (int) bounds.bottom());
+                        context.getMatrices().push();
+                        context.getMatrices().translate(0,0,getZ());
                         switch (getElement().getFillMode()){
                             case FIXED -> drawFixed(context,texture,region,tRegion);
                             case SCALE -> drawScaled(context,texture,region,tRegion);
@@ -86,6 +88,7 @@ public class AImageDrawable extends AnchorDrawable<AImage> {
                             case SCALE_9 -> draw9Patched(context,texture,region,tRegion);
                             case REPEAT -> drawRepeated(context,texture,region,tRegion);
                         }
+                        context.getMatrices().pop();
                         context.disableScissor();
                         RenderSystem.disableBlend();
                     });

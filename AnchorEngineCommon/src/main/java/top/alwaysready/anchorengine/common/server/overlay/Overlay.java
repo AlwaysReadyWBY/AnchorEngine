@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.net.packet.json.OverlayInfo;
 import top.alwaysready.anchorengine.common.service.schedule.ScheduleService;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.util.Map;
@@ -76,7 +76,7 @@ public class Overlay {
         StringReplacer childReplacer = replacer.createChild();
         getVarMap().forEach(childReplacer::map);
         varMap.forEach(childReplacer::map);
-        OverlayInfo info = new OverlayInfo(id, getUI(), getLifeMillis(childReplacer));
+        OverlayInfo info = new OverlayInfo(id==null?getId():id, getUI(), getLifeMillis(childReplacer));
         info.getVarMap().putAll(getVarMap());
         info.getVarMap().putAll(varMap);
 

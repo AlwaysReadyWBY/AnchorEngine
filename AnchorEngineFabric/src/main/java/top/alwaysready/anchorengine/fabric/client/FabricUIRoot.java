@@ -41,7 +41,8 @@ public class FabricUIRoot implements UIRoot {
 
     public CompletableFuture<Boolean> update() {
         try {
-            if (MinecraftClient.getInstance().currentScreen instanceof AnchorScreen screen) {
+            MinecraftClient client = MinecraftClient.getInstance();
+            if (client.currentScreen instanceof AnchorScreen screen) {
                 screen.update();
             }
             if (hudRoot == null) {

@@ -4,29 +4,29 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class PinBoard {
-    private String pin1;
-    private String pin2;
+    private PinPoint pin1;
+    private PinPoint pin2;
     private Map<String, PinPoint> pinMap;
     private String hAlign;
     private String vAlign;
     private String hWrap;
     private String vWrap;
 
-    public void setPin1(String pin1) {
+    public void setPin1(PinPoint pin1) {
         this.pin1 = pin1;
     }
 
-    public String getPin1() {
-        if(pin1 == null) pin1 = "left_top";
+    public PinPoint getPin1() {
+        if(pin1 == null) pin1 = new PinPoint("left_top");
         return pin1;
     }
 
-    public void setPin2(String pin2) {
+    public void setPin2(PinPoint pin2) {
         this.pin2 = pin2;
     }
 
-    public String getPin2() {
-        if(pin2 == null) pin2 = "right_bottom";
+    public PinPoint getPin2() {
+        if(pin2 == null) pin2 = new PinPoint("right_bottom");
         return pin2;
     }
 

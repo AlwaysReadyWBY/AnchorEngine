@@ -11,7 +11,7 @@ import top.alwaysready.anchorengine.common.net.packet.json.JsonPacket;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketTypes;
 import top.alwaysready.anchorengine.common.net.packet.json.JsonPacketUtils;
 import top.alwaysready.anchorengine.common.net.packet.json.Push;
-import top.alwaysready.anchorengine.common.string.StringReplacer;
+import top.alwaysready.anchorengine.common.serialization.StringReplacer;
 import top.alwaysready.anchorengine.common.util.AnchorUtils;
 
 import java.io.File;

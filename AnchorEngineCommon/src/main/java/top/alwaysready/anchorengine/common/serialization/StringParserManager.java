@@ -1,4 +1,4 @@
-package top.alwaysready.anchorengine.common.string;
+package top.alwaysready.anchorengine.common.serialization;
 
 import java.util.Hashtable;
 import java.util.Map;
